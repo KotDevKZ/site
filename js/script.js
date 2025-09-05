@@ -82,12 +82,18 @@
   }
 
   // перезапуск попытки (кнопку создадим автоматически)
-  window.resetQuiz = function() {
+  window.resetQuiz = function () {
     const form = document.getElementById("quizForm");
     if (!form) return;
+
     form.reset();
-    document.getElementById("result")?.textContent = "";
-    document.getElementById("nextLesson")?.style && (document.getElementById("nextLesson").style.display = "none");
+
+    const resEl  = document.getElementById("result");
+    if (resEl) resEl.textContent = "";
+
+    const nextBtn = document.getElementById("nextLesson");
+    if (nextBtn) nextBtn.style.display = "none";
+
     form.querySelectorAll(".q-right,.q-wrong,.right-answer")
         .forEach(el => el.classList.remove("q-right","q-wrong","right-answer"));
   };
