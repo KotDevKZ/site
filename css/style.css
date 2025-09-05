@@ -1,33 +1,267 @@
-/* gradient and large text CSS */
-:root {
-    --bg1: #a18cd1;
-    --bg2: #fbc2eb;
-    --card: #fff;
-    --ink: #1f1147;
-    --accent: #7c4dff
+/* ====== Базовые переменные (градиент оставляем как просил) ====== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root{
+  --bg1:#a18cd1;            /* твой фон */
+  --bg2:#fbc2eb;
+  --card:rgba(255,255,255,.72);
+  --card-solid:#fff;         /* fallback без blur */
+  --ink:#1f1147;
+  --muted:#6b6b8a;
+  --accent:#7c4dff;          /* основной акцент */
+  --success:#22c55e;
+  --danger:#ef4444;
+
+  --radius:18px;
+  --shadow:0 10px 30px rgba(16, 24, 40, .12);
+  --ring:0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
 }
 
-body {
-    margin: 0;
-    background: linear-gradient(135deg, var(--bg1), var(--bg2));
-    font-size: 18px
-}
-
-h1,
-h2,
-h3 {
-    text-align: center
-}
-
-/* подсветка вопросов */
-.q-right { background: rgba(34,197,94,.12); border-left: 4px solid #22c55e; }
-.q-wrong { background: rgba(239,68,68,.12); border-left: 4px solid #ef4444; }
-.right-answer { text-decoration: underline; font-weight: 600; }
-/* облегчённая кнопка */
-.btn.btn-outline { background: transparent; border: 1px solid var(--ink); }
-
-
-/* светлая уже есть; для тёмной просто переопределим переменные */
+/* ====== Темная тема: только переопределения ====== */
 .dark{
-  --bg1:#0f172a; --bg2:#111827; --card:#0b1220; --ink:#e5e7eb; --accent:#22d3ee;
+  --bg1:#0f172a;
+  --bg2:#111827;
+  --card:rgba(11,16,28,.65);
+  --card-solid:#0b1220;
+  --ink:#e5e7eb;
+  --muted:#a1a1aa;
+  --accent:#22d3ee;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+}
+
+/* ====== Глобально ====== */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  background-attachment: fixed;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+h1,h2,h3{margin:0 0 .5rem}
+h1{font-size: clamp(28px, 3.2vw, 44px); font-weight:800; letter-spacing:-.02em}
+h2{font-size: clamp(22px, 2.2vw, 28px); font-weight:700}
+h3{font-size: clamp(18px, 1.8vw, 22px); font-weight:700}
+
+p{margin:.25rem 0 1rem;color:var(--muted)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.container{
+  max-width:1200px;
+  margin: 40px auto;
+  padding: 0 20px 80px;
+}
+
+/* ====== Карточки (стекло) ====== */
+.card{
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border:1px solid rgba(255,255,255,.35);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding:24px;
+}
+
+/* ====== Hero (главный блок на index) ====== */
+.hero{
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:24px;
+  align-items: center;
+  overflow:hidden;
+}
+.hero img{
+  width:100%;
+  height:100%;
+  min-height:320px;
+  object-fit:cover;
+  border-radius: calc(var(--radius) - 6px);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+}
+.hero input{
+  width:100%;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid rgba(0,0,0,.08);
+  background:var(--card-solid);
+  color:var(--ink);
+  outline:none;
+  transition:.2s border-color,.2s box-shadow,.2s transform;
+}
+.hero input:focus{ border-color: var(--accent); box-shadow: var(--ring); transform: translateY(-1px) }
+#progressSummary{margin-top:10px; font-weight:600; color:var(--ink)}
+
+/* ====== Сетка карточек уроков ====== */
+.grid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:18px;
+}
+.lesson-thumb{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  overflow:hidden;
+  padding:14px;
+}
+.lesson-thumb img{
+  width:100%;
+  aspect-ratio: 3/2;
+  object-fit:cover;
+  border-radius:12px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+  transform: translateZ(0);
+  transition: .25s transform, .25s box-shadow;
+}
+.lesson-thumb:hover img{ transform: scale(1.03); box-shadow: 0 12px 24px rgba(0,0,0,.18) }
+.lesson-thumb h3{ margin: 2px 0 6px }
+.lesson-thumb .btn{ width:100% }
+
+/* бейдж прогресса */
+.badge{
+  position:absolute; top:12px; right:12px;
+  padding:6px 10px; border-radius:999px;
+  font-size:12px; font-weight:700; color:#fff;
+  background: linear-gradient(90deg, var(--accent), color-mix(in oklab, var(--accent) 60%, #000));
+  box-shadow: 0 6px 14px rgba(0,0,0,.18);
+}
+
+/* ====== Кнопки ====== */
+.btn{
+  --btn-bg: var(--accent);
+  --btn-ink: #fff;
+
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.5rem;
+  padding:12px 16px;
+  border-radius:12px;
+  background:var(--btn-bg);
+  color:var(--btn-ink);
+  border:1px solid color-mix(in oklab, var(--btn-bg) 88%, #000);
+  cursor:pointer;
+  font-weight:700;
+  transition: .2s transform, .2s box-shadow, .2s opacity, .2s background;
+  box-shadow: 0 8px 20px color-mix(in oklab, var(--btn-bg) 35%, transparent);
+}
+.btn:hover{ transform: translateY(-1px) }
+.btn:active{ transform: translateY(0) scale(.98) }
+.btn:disabled{ opacity:.55; cursor:not-allowed }
+
+/* Обводочная */
+.btn.btn-outline{
+  --btn-bg: transparent;
+  --btn-ink: var(--ink);
+  background: transparent;
+  border:1px solid rgba(0,0,0,.18);
+  box-shadow:none;
+}
+
+/* Фиксированная кнопка темы — чтобы была на всех страницах */
+#themeToggle{
+  position: fixed;
+  bottom: 22px; right: 22px;
+  z-index: 50;
+}
+
+/* ====== Страница урока ====== */
+.hero-lesson{
+  width:100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius:12px;
+  margin: 10px 0 8px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+}
+
+.quiz{ margin-top:12px }
+.quiz ol{ margin: 0; padding:0; list-style:none; counter-reset: q }
+.quiz li{
+  position:relative;
+  margin: 0 0 10px;
+  padding: 14px 14px 10px 46px;
+  border-radius:12px;
+  background: var(--card-solid);
+  border:1px solid rgba(0,0,0,.06);
+  transition:.2s box-shadow,.2s transform,.2s background;
+}
+.quiz li:hover{ transform: translateY(-1px); box-shadow: var(--shadow) }
+.quiz li::before{
+  counter-increment: q;
+  content: counter(q) ".";
+  position:absolute; top: 14px; left: 14px;
+  width:24px; height:24px; border-radius:8px;
+  background: color-mix(in oklab, var(--accent) 18%, #fff);
+  color: var(--ink);
+  display:grid; place-items:center;
+  font-weight:800; font-size:12px;
+}
+
+/* радиокнопки — аккуратно и нативно */
+input[type="radio"]{
+  accent-color: var(--accent);
+  transform: translateY(2px);
+  margin-right:6px;
+}
+
+label{ cursor: pointer; }
+#result{ margin: 8px 0 10px; font-weight:700; color:var(--ink) }
+
+/* Подсветка правильных/неправильных (твоя логика) */
+.q-right { background: rgba(34,197,94,.12); border-left: 4px solid var(--success); }
+.q-wrong { background: rgba(239,68,68,.12); border-left: 4px solid var(--danger); }
+.right-answer { text-decoration: underline; font-weight: 600; }
+
+/* Кнопка «Сбросить попытку» рядом с результатом */
+#resetAttempt{ margin-left: 8px }
+
+/* ====== Сертификат ====== */
+.certificate{
+  text-align:center;
+  padding: 36px 28px;
+  background: var(--card-solid);
+}
+.certificate h1{ letter-spacing:.18em }
+.certificate h2{ margin: 10px 0 16px }
+.certificate .btn{ margin-top: 10px }
+
+/* ====== Мелочи ====== */
+img{ max-width:100%; display:block }
+hr{ border:0; height:1px; background: rgba(0,0,0,.08); margin: 18px 0 }
+
+/* Системная прокрутка чуть приятнее */
+*{ scrollbar-color: color-mix(in oklab, var(--accent) 40%, #bbb) transparent }
+*::-webkit-scrollbar{ height:10px; width:10px }
+*::-webkit-scrollbar-thumb{
+  background: color-mix(in oklab, var(--accent) 40%, #bbb);
+  border-radius: 999px;
+}
+
+/* ====== Адаптив ====== */
+@media (max-width: 1100px){
+  .grid{ grid-template-columns: repeat(4, 1fr) }
+}
+@media (max-width: 900px){
+  .hero{ grid-template-columns: 1fr; }
+  .hero img{ min-height:220px }
+  .grid{ grid-template-columns: repeat(3, 1fr) }
+}
+@media (max-width: 680px){
+  .container{ margin: 24px auto 60px }
+  .grid{ grid-template-columns: repeat(2, 1fr) }
+}
+@media (max-width: 430px){
+  .grid{ grid-template-columns: 1fr }
+}
+
+/* Лёгкая доступность */
+@media (prefers-reduced-motion: reduce){
+  *{ transition:none !important; animation:none !important }
 }
