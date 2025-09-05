@@ -18,3 +18,16 @@ h2,
 h3 {
     text-align: center
 }
+
+/* подсветка вопросов */
+.q-right { background: rgba(34,197,94,.12); border-left: 4px solid #22c55e; }
+.q-wrong { background: rgba(239,68,68,.12); border-left: 4px solid #ef4444; }
+.right-answer { text-decoration: underline; font-weight: 600; }
+/* облегчённая кнопка */
+.btn.btn-outline { background: transparent; border: 1px solid var(--ink); }
+
+
+/* светлая уже есть; для тёмной просто переопределим переменные */
+.dark{
+  --bg1:#0f172a; --bg2:#111827; --card:#0b1220; --ink:#e5e7eb; --accent:#22d3ee;
+}
