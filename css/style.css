@@ -194,13 +194,25 @@ a:hover{text-decoration:underline}
 
 /* ====== Страница урока ====== */
 .hero-lesson{
-  width:100%;
-  height: 320px;
-  object-fit: cover;
-  border-radius:12px;
+  width: 100%;
+  aspect-ratio: 21 / 9;   /* выбери 16/9, 21/9, 3/1 — что красивее под твой контент */
+  object-fit: cover;      /* заполняем блок без искажений, лишнее аккуратно обрезается */
+  object-position: center;/* куда «смотреть» при обрезке */
+  border-radius: 12px;
   margin: 10px 0 8px;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.25);
+  background: var(--card-solid);
+  display: block;
 }
+
+/* Если нужно иногда не обрезать, а вписать целиком (с «полями») */
+.hero-lesson.fit-contain { object-fit: contain }
+
+/* Тонкая настройка точки фокуса без правки CSS — просто классом */
+.hero-lesson.pos-top    { object-position: center top }
+.hero-lesson.pos-bottom { object-position: center bottom }
+.hero-lesson.pos-left   { object-position: left center }
+.hero-lesson.pos-right  { object-position: right center }
 
 .quiz{ margin-top:12px }
 .quiz ol{ margin: 0; padding:0; list-style:none; counter-reset: q }
