@@ -252,9 +252,6 @@ label{ cursor: pointer; }
 .q-wrong { background: rgba(239,68,68,.12); border-left: 4px solid var(--danger); }
 .right-answer { text-decoration: underline; font-weight: 600; }
 
-/* Кнопка «Сбросить попытку» рядом с результатом */
-#resetAttempt{ margin-left: 8px }
-
 /* ====== Сертификат ====== */
 .certificate{
   text-align:center;
