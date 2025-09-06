@@ -162,6 +162,13 @@
     });
   })();
 
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".lesson-thumb img").forEach(img => {
+      img.loading = "lazy";
+      img.decoding = "async";
+    });
+  });
+
   document.addEventListener("DOMContentLoaded", renderIndex);
 
   // Сделать функции доступными из HTML
