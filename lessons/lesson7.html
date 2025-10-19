@@ -11,11 +11,39 @@
 <body>
   <div class='container'>
     <div class='card'>
-      <h1>Урок 7</h1><img class='hero-lesson' src='../images/test7.jpg' alt='Урок 7'>
-      <h2>Теория</h2>
+      <h1>Урок 7. Сетевые угрозы</h1><img class='hero-lesson' src='../images/test7.jpg' alt='Урок 7'>
+      <h2>Подделка Wi-Fi (Evil Twin)</h2>
       <ul>
-        <li>Ключевые понятия.</li>
-        <li>Практические рекомендации.</li>
+        <li>Что это: злоумышленник создаёт точку доступа с похожим именем на настоящую (например, "Coffee_FreeWiFi" вместо "Coffee_WiFi").</li>
+        <li>Как это работает: пользователь подключается к фальшивой сети → злоумышленник видит его трафик, может подменить сайты.</li>
+        <li>Пример: школьник создал сеть "School_WiFi" → друзья подключились → их пароли к соцсетям стали видны.</li>
+      </ul>
+<h2>Прослушка открытых сетей</h2>
+      <ul>
+        <li>Что это: в незащищённой сети (без пароля) передаваемые данные могут перехватываться.</li>
+        <li>Что могут украсть: логины, пароли, переписку, фото.</li>
+        <li>Как заметить: по сути никак — перехват не виден.</li>
+      </ul>
+<h2>VPN как средство защиты</h2>
+      <ul>
+        <li>Что такое VPN: виртуальная частная сеть, создаёт зашифрованный «туннель» между вашим устройством и интернетом.</li>
+        <li>Как помогает: даже если трафик перехватят — он будет зашифрован.</li>
+        <li>Примеры безопасного использования: подключение к школьной сети из дома, защита при использовании кафе-Wi-Fi.</li>
+      </ul>
+<h2>Основные угрозы Bluetooth</h2>
+      <ul>
+        <li>Bluejacking – отправка нежелательных сообщений на чужие устройства поблизости.</li>
+        <li>Bluesnarfing – кража файлов, контактов и сообщений с вашего телефона через уязвимость Bluetooth.</li>
+        <li>Bluebugging – злоумышленник получает контроль над телефоном: может звонить, читать SMS, слушать микрофон.</li>
+        <li>Скрытые подключения – некоторые устройства пытаются подключаться автоматически, если Bluetooth включён и телефон «видим для всех».</li>
+      </ul>
+<h2>Как защититься</h2>
+      <ul>
+        <li>Отключайте Bluetooth, если не используете.</li>
+        <li>Ставьте режим «Скрытый» (устройство невидимо для поиска).</li>
+        <li>Подключайте устройства только по PIN-коду или подтверждению.</li>
+        <li>Не принимайте файлы от незнакомцев.</li>
+        <li>Обновляйте систему телефона — новые версии закрывают уязвимости.</li>
       </ul>
       <h2>Задания</h2>
       <ol>
@@ -27,164 +55,200 @@
       <div class='quiz'>
         <form id='quizForm'>
           <ol>
-            <li>Вопрос 1?
+            <li>1. Что опасно в бесплатном Wi-Fi?
               <br>
               <label>
-                <input type='radio' name='q1' value='a'> Правильный ответ</label>
+                <input type='radio' name='q1' value='a'> Медленный интернет</label>
               <br>
               <label>
-                <input type='radio' name='q1' value='b'> Неправильный</label>
+                <input type='radio' name='q1' value='b'> Возможность перехвата данных</label>
               <br>
               <label>
-                <input type='radio' name='q1' value='c'> Неправильный</label>
+                <input type='radio' name='q1' value='c'> Красивое название сети</label>
+              <br>
+              <label>
+                <input type='radio' name='q1' value='d'> Сильный сигнал</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 2?
+            <li>2. Как защититься в Wi-Fi?
               <br>
               <label>
-                <input type='radio' name='q2' value='a'> Правильный ответ</label>
+                <input type='radio' name='q2' value='a'> Использовать VPN</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='b'> Неправильный</label>
+                <input type='radio' name='q2' value='b'> Выключить интернет</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='c'> Неправильный</label>
+                <input type='radio' name='q2' value='c'> Делиться паролем</label>
+              <br>
+              <label>
+                <input type='radio' name='q2' value='d'> Игнорировать</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 3?
+            <li>3. Что значит «поддельная точка доступа»?
               <br>
               <label>
-                <input type='radio' name='q3' value='a'> Правильный ответ</label>
+                <input type='radio' name='q3' value='a'> Сеть, созданная мошенником</label>
               <br>
               <label>
-                <input type='radio' name='q3' value='b'> Неправильный</label>
+                <input type='radio' name='q3' value='b'> Настоящий Wi-Fi</label>
               <br>
               <label>
-                <input type='radio' name='q3' value='c'> Неправильный</label>
+                <input type='radio' name='q3' value='c'> Интернет от провайдера</label>
+              <br>
+              <label>
+                <input type='radio' name='q3' value='d'> Мобильный интернет</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 4?
+            <li>4. Что проверять при подключении?
               <br>
               <label>
-                <input type='radio' name='q4' value='a'> Правильный ответ</label>
+                <input type='radio' name='q4' value='a'> Имя сети</label>
               <br>
               <label>
-                <input type='radio' name='q4' value='b'> Неправильный</label>
+                <input type='radio' name='q4' value='b'> Цвет экрана</label>
               <br>
               <label>
-                <input type='radio' name='q4' value='c'> Неправильный</label>
+                <input type='radio' name='q4' value='c'> Сигнал телефона</label>
+              <br>
+              <label>
+                <input type='radio' name='q4' value='d'> Фото</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 5?
+            <li>5. Что может сделать злоумышленник в Wi-Fi?
               <br>
               <label>
-                <input type='radio' name='q5' value='a'> Правильный ответ</label>
+                <input type='radio' name='q5' value='a'> Перехватить переписку</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='b'> Неправильный</label>
+                <input type='radio' name='q5' value='b'> Ускорить интернет</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='c'> Неправильный</label>
+                <input type='radio' name='q5' value='c'> Сделать скидку</label>
+              <br>
+              <label>
+                <input type='radio' name='q5' value='d'> Выключить телефон</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 6?
+            <li>6. Что значит VPN?
               <br>
               <label>
-                <input type='radio' name='q6' value='a'> Правильный ответ</label>
+                <input type='radio' name='q6' value='a'> Virtual Private Network</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='b'> Неправильный</label>
+                <input type='radio' name='q6' value='b'> Very Personal Net</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='c'> Неправильный</label>
+                <input type='radio' name='q6' value='c'> Video Plus Net</label>
+              <br>
+              <label>
+                <input type='radio' name='q6' value='d'> Virus Protect Network</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 7?
+            <li>7. Чем полезен VPN?
               <br>
               <label>
-                <input type='radio' name='q7' value='a'> Правильный ответ</label>
+                <input type='radio' name='q7' value='a'> Шифрует трафик</label>
               <br>
               <label>
-                <input type='radio' name='q7' value='b'> Неправильный</label>
+                <input type='radio' name='q7' value='b'> Ускоряет интернет</label>
               <br>
               <label>
-                <input type='radio' name='q7' value='c'> Неправильный</label>
+                <input type='radio' name='q7' value='c'> Делает всё бесплатно</label>
+              <br>
+              <label>
+                <input type='radio' name='q7' value='d'> Убирает вирусы</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 8?
+            <li>8. Как узнать, что сеть небезопасна?
               <br>
               <label>
-                <input type='radio' name='q8' value='a'> Правильный ответ</label>
+                <input type='radio' name='q8' value='a'> Нет пароля</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='b'> Неправильный</label>
+                <input type='radio' name='q8' value='b'> Сильный сигнал</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='c'> Неправильный</label>
+                <input type='radio' name='q8' value='c'> Быстрая скорость</label>
+              <br>
+              <label>
+                <input type='radio' name='q8' value='d'> Красивое имя</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 9?
+            <li>9. Что не стоит делать в открытом Wi-Fi?
               <br>
               <label>
-                <input type='radio' name='q9' value='a'> Правильный ответ</label>
+                <input type='radio' name='q9' value='a'> Проверять погоду</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='b'> Неправильный</label>
+                <input type='radio' name='q9' value='b'> Входить в интернет-банк</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='c'> Неправильный</label>
+                <input type='radio' name='q9' value='c'> Читать новости</label>
+              <br>
+              <label>
+                <input type='radio' name='q9' value='d'> Смотреть видео</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 10?
+            <li>10. Что делает хакер в «Man-in-the-Middle» атаке?
               <br>
               <label>
-                <input type='radio' name='q10' value='a'> Правильный ответ</label>
+                <input type='radio' name='q10' value='a'> Подменяет данные </label>
               <br>
               <label>
-                <input type='radio' name='q10' value='b'> Неправильный</label>
+                <input type='radio' name='q10' value='b'> Игнорирует</label>
               <br>
               <label>
-                <input type='radio' name='q10' value='c'> Неправильный</label>
+                <input type='radio' name='q10' value='c'> Создаёт сайт</label>
+              <br>
+              <label>
+                <input type='radio' name='q10' value='d'> Скачивает файлы</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 11?
+            <li>11. Чем опасен Bluetooth?
               <br>
               <label>
-                <input type='radio' name='q11' value='a'> Правильный ответ</label>
+                <input type='radio' name='q11' value='a'> Можно заразить вирусом</label>
               <br>
               <label>
-                <input type='radio' name='q11' value='b'> Неправильный</label>
+                <input type='radio' name='q11' value='b'> Только для музыки</label>
               <br>
               <label>
-                <input type='radio' name='q11' value='c'> Неправильный</label>
+                <input type='radio' name='q11' value='c'> Неопасен</label>
+              <br>
+              <label>
+                <input type='radio' name='q11' value='d'> Служит интернетом</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 12?
+            <li>Вопрос 12. Как лучше подключаться в дороге?
               <br>
               <label>
-                <input type='radio' name='q12' value='a'> Правильный ответ</label>
+                <input type='radio' name='q12' value='a'> Через мобильный интернет</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='b'> Неправильный</label>
+                <input type='radio' name='q12' value='b'> Через любой Wi-Fi</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='c'> Неправильный</label>
+                <input type='radio' name='q12' value='c'> Через чужие сети</label>
+              <br>
+              <label>
+                <input type='radio' name='q12' value='d'> Без пароля</label>
               <br>
             </li>
             <br>
           </ol>
-          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "a", "q3": "a", "q4": "a", "q5": "a", "q6": "a", "q7": "a", "q8": "a", "q9": "a", "q10": "a", "q11": "a", "q12": "a"},lessonKey:"lesson7",passPercent:60})'>Проверить результат</button>
+          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "b", "q3": "a", "q4": "a", "q5": "a", "q6": "a", "q7": "a", "q8": "a", "q9": "b", "q10": "a", "q11": "a", "q12": "a"},lessonKey:"lesson7",passPercent:60})'>Проверить результат</button>
         </form>
         <p id='result'></p>
         <button id='nextLesson' class='btn' style='display:none' onclick='location.href="lesson8.html"'>Перейти далее</button>

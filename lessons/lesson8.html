@@ -11,11 +11,36 @@
 <body>
   <div class='container'>
     <div class='card'>
-      <h1>Урок 8</h1><img class='hero-lesson' src='../images/test8.jpg' alt='Урок 8'>
-      <h2>Теория</h2>
+      <h1>Урок 8.  Резервное копирование</h1><img class='hero-lesson' src='../images/test8.jpg' alt='Урок 8'>
+      <h2>Что такое резервное копирование</h2>
       <ul>
-        <li>Ключевые понятия.</li>
-        <li>Практические рекомендации.</li>
+        <li>Бэкап(резервные копии)- создание копий важных данных для их восстановления при потере или повреждении.</li>
+      <li>Пример: копия фотографий на Google Диск, iCloud или флешке.</li>
+      </ul>
+      <h2>Зачем оно нужно❗</h2>
+<ul>
+        <li>Поломка устройства.</li>
+        <li>Случайное удаление файлов.</li>
+        <li>Вирусы-шифровальщики.</li>
+        <li>Кража или потеря телефона/ноутбука.</li>
+      </ul>
+      <h2>Виды резервного копирования</h2>
+<ul>
+        <li><b>Полное-</b> копируются все данные.</li>
+        <li><b>Инкрементное-</b> копируются только новые/изменённые файлы.</li>
+        <li><b>Дифференциальное-</b>копируются изменения с момента последнего полного бэкапа.</li>
+      </ul>
+      <h2>Где хранить резервные копии</h2>
+<ul>
+        <li>Облако: Google Диск, OneDrive, iCloud, Dropbox.</li>
+        <li>Внешние накопители: флешки, внешние жёсткие диски.</li>
+        <li>NAS-серверы: домашние сетевые диски (для продвинутых пользователей).</li>
+      </ul>
+      <h2>Правило 3-2-1.📌</h2>
+<ul>
+        <li>3 копии данных (оригинал + 2 копии).</li>
+        <li>2 разных носителя (например, компьютер + облако).</li>
+        <li>1 копия вне дома (чтобы пожар/кража не уничтожили всё).</li>
       </ul>
       <h2>Задания</h2>
       <ol>
@@ -27,164 +52,200 @@
       <div class='quiz'>
         <form id='quizForm'>
           <ol>
-            <li>Вопрос 1?
+            <li>1. Что значит «бэкап»?
               <br>
               <label>
-                <input type='radio' name='q1' value='a'> Правильный ответ</label>
+                <input type='radio' name='q1' value='a'> Копия данных </label>
               <br>
               <label>
-                <input type='radio' name='q1' value='b'> Неправильный</label>
+                <input type='radio' name='q1' value='b'> Удаление данных</label>
               <br>
               <label>
-                <input type='radio' name='q1' value='c'> Неправильный</label>
+                <input type='radio' name='q1' value='c'> Вирус</label>
+              <br>
+              <label>
+                <input type='radio' name='q1' value='d'> Новая программа</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 2?
+            <li>2. Зачем нужны резервные копии?
               <br>
               <label>
-                <input type='radio' name='q2' value='a'> Правильный ответ</label>
+                <input type='radio' name='q2' value='a'> Для красоты</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='b'> Неправильный</label>
+                <input type='radio' name='q2' value='b'> Чтобы восстановить данные</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='c'> Неправильный</label>
+                <input type='radio' name='q2' value='c'> Чтобы освободить память</label>
+              <br>
+              <label>
+                <input type='radio' name='q2' value='d'> Чтобы ускорить интернет</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 3?
+            <li>3. Где хранить бэкапы?
               <br>
               <label>
-                <input type='radio' name='q3' value='a'> Правильный ответ</label>
+                <input type='radio' name='q3' value='a'> Только на том же диске</label>
               <br>
               <label>
-                <input type='radio' name='q3' value='b'> Неправильный</label>
+                <input type='radio' name='q3' value='b'> В памяти телефона</label>
               <br>
               <label>
-                <input type='radio' name='q3' value='c'> Неправильный</label>
+                <input type='radio' name='q3' value='c'> В мессенджерах</label>
+              <br>
+              <label>
+                <input type='radio' name='q3' value='d'> В облаке</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 4?
+            <li>4. Как часто делать бэкапы?
               <br>
               <label>
-                <input type='radio' name='q4' value='a'> Правильный ответ</label>
+                <input type='radio' name='q4' value='a'> Никогда</label>
               <br>
               <label>
-                <input type='radio' name='q4' value='b'> Неправильный</label>
+                <input type='radio' name='q4' value='b'> Регулярно </label>
               <br>
               <label>
-                <input type='radio' name='q4' value='c'> Неправильный</label>
+                <input type='radio' name='q4' value='c'> Раз в 10 лет</label>
+              <br>
+              <label>
+                <input type='radio' name='q4' value='d'> Раз в день</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 5?
+            <li>5. Что нельзя хранить в одном месте?
               <br>
               <label>
-                <input type='radio' name='q5' value='a'> Правильный ответ</label>
+                <input type='radio' name='q5' value='a'> Пароли</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='b'> Неправильный</label>
+                <input type='radio' name='q5' value='b'> Все копии</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='c'> Неправильный</label>
+                <input type='radio' name='q5' value='c'> Игры</label>
+              <br>
+              <label>
+                <input type='radio' name='q5' value='d'> Фото</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 6?
+            <li>6. Чем опасно отсутствие бэкапа?
               <br>
               <label>
-                <input type='radio' name='q6' value='a'> Правильный ответ</label>
+                <input type='radio' name='q6' value='a'> Потерей данных</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='b'> Неправильный</label>
+                <input type='radio' name='q6' value='b'> Ускорением компьютера</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='c'> Неправильный</label>
+                <input type='radio' name='q6' value='c'> Долгой загрузкой</label>
+              <br>
+              <label>
+                <input type='radio' name='q6' value='d'> Шумом</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 7?
+            <li>7. Что лучше: один бэкап или несколько?
               <br>
               <label>
-                <input type='radio' name='q7' value='a'> Правильный ответ</label>
+                <input type='radio' name='q7' value='a'> Один</label>
               <br>
               <label>
-                <input type='radio' name='q7' value='b'> Неправильный</label>
+                <input type='radio' name='q7' value='b'> Несколько </label>
               <br>
               <label>
-                <input type='radio' name='q7' value='c'> Неправильный</label>
+                <input type='radio' name='q7' value='c'> Неважно</label>
+              <br>
+              <label>
+                <input type='radio' name='q7' value='d'> Нет разницы</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 8?
+            <li>8. Что значит «облачное хранение»?
               <br>
               <label>
-                <input type='radio' name='q8' value='a'> Правильный ответ</label>
+                <input type='radio' name='q8' value='a'> Данные в интернете</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='b'> Неправильный</label>
+                <input type='radio' name='q8' value='b'> Данные в облаках</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='c'> Неправильный</label>
+                <input type='radio' name='q8' value='c'> Данные в телефоне</label>
+              <br>
+              <label>
+                <input type='radio' name='q8' value='d'> Данные в книге</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 9?
+            <li>9. Как проверить бэкап?
               <br>
               <label>
-                <input type='radio' name='q9' value='a'> Правильный ответ</label>
+                <input type='radio' name='q9' value='a'> Попробовать восстановить</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='b'> Неправильный</label>
+                <input type='radio' name='q9' value='b'> Игнорировать</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='c'> Неправильный</label>
+                <input type='radio' name='q9' value='c'> Удалить</label>
+              <br>
+              <label>
+                <input type='radio' name='q9' value='d'> Спросить у друзей</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 10?
+            <li>10. Что важно при резервировании?
               <br>
               <label>
-                <input type='radio' name='q10' value='a'> Правильный ответ</label>
+                <input type='radio' name='q10' value='a'> Безопасность </label>
               <br>
               <label>
-                <input type='radio' name='q10' value='b'> Неправильный</label>
+                <input type='radio' name='q10' value='b'> Красивый вид</label>
               <br>
               <label>
-                <input type='radio' name='q10' value='c'> Неправильный</label>
+                <input type='radio' name='q10' value='c'> Цвет папки</label>
+              <br>
+              <label>
+                <input type='radio' name='q10' value='d'> Размер файла</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 11?
+            <li>11. Что лучше для личных фото?
               <br>
               <label>
-                <input type='radio' name='q11' value='a'> Правильный ответ</label>
+                <input type='radio' name='q11' value='a'> Чат </label>
               <br>
               <label>
-                <input type='radio' name='q11' value='b'> Неправильный</label>
+                <input type='radio' name='q11' value='b'> Облако </label>
               <br>
               <label>
-                <input type='radio' name='q11' value='c'> Неправильный</label>
+                <input type='radio' name='q11' value='c'> Один компьютер</label>
+              <br>
+              <label>
+                <input type='radio' name='q11' value='d'> Бумажный лист</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 12?
+            <li>12. Что значит «инкрементный бэкап»?
               <br>
               <label>
-                <input type='radio' name='q12' value='a'> Правильный ответ</label>
+                <input type='radio' name='q12' value='a'> Сохраняет только изменения</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='b'> Неправильный</label>
+                <input type='radio' name='q12' value='b'> Удаляет старое</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='c'> Неправильный</label>
+                <input type='radio' name='q12' value='c'> Копирует всё</label>
+              <br>
+              <label>
+                <input type='radio' name='q12' value='d'> Стирает данные</label>
               <br>
             </li>
             <br>
           </ol>
-          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "a", "q3": "a", "q4": "a", "q5": "a", "q6": "a", "q7": "a", "q8": "a", "q9": "a", "q10": "a", "q11": "a", "q12": "a"},lessonKey:"lesson8",passPercent:60})'>Проверить результат</button>
+          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "b", "q3": "d", "q4": "b", "q5": "b", "q6": "a", "q7": "b", "q8": "a", "q9": "a", "q10": "a", "q11": "b", "q12": "a"},lessonKey:"lesson8",passPercent:60})'>Проверить результат</button>
         </form>
         <p id='result'></p>
         <button id='nextLesson' class='btn' style='display:none' onclick='location.href="lesson9.html"'>Перейти далее</button>

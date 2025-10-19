@@ -3,7 +3,7 @@
 
 <head>
   <meta charset='utf-8'>
-  <title>Урок 2</title>
+  <title>Урок 2 </title>
   <link rel='stylesheet' href='../css/style.css'>
   <script src='../js/script.js' defer></script>
 </head>
@@ -11,11 +11,36 @@
 <body>
   <div class='container'>
     <div class='card'>
-      <h1>Урок 2</h1><img class='hero-lesson' src='../images/test2.jpg' alt='Урок 2'>
-      <h2>Теория</h2>
+      <h1>Урок 2. Двухфакторная аутентификация (2FA)</h1><img class='hero-lesson' src='../images/test2.jpg' alt='Урок 2'>
+      <h2>Основные понятия двухфакторной аутентификации ❓(2FA)</h2>
       <ul>
-        <li>Ключевые понятия.</li>
-        <li>Практические рекомендации.</li>
+        <li>Двухфакторная аутентификация (2FA) — это метод подтверждения личности, при котором для входа в аккаунт требуется два разных фактора из трёх категорий:</li>
+        <li>Что-то, что вы знаете (пароль, PIN).</li>
+        <li>Что-то, что вы имеете (телефон, аппаратный ключ, смарт-карта).</li>
+        <li>Что-то, чем вы являетесь (отпечаток пальца, распознавание лица — биометрия).</li>
+      </ul>
+<h2>Зачем нужна 2FA❓</h2>
+      <ul>
+        <li>Если пароль украдут или подберут, злоумышленник всё ещё не сможет войти без второго фактора.</li>
+        <li>Снижает риск взлома почты, соцсетей, банковских аккаунтов и т.п. (пароль, PIN).</li>
+        <li>Особенно важно для аккаунтов с личными/финансовыми данными.</li>
+      </ul>
+<h2>Основные типы 2FA❗</h2>
+      <ul>
+        <li>SMS-код — сервис отправляет одноразовый код в SMS на ваш телефон. Простой, но уязвим к перехвату/подмене SIM.</li>
+        <li>Коды в приложении (TOTP) — приложения (Google Authenticator, Authy, Microsoft Authenticator, Bitwarden) генерируют 6-значные коды, меняющиеся каждые 30 секунд. Более надёжно, чем SMS.</li>
+        <li>Push-уведомления — при входе сервис шлёт уведомление в приложение, где вы подтверждаете вход одним нажатием. Удобно и безопасно при правильной настройке.</li>
+        <li>Аппаратные ключи (U2F, WebAuthn) — физическое устройство (например, YubiKey). Очень надёжно: требуется физический ключ.</li>
+        <li>Биометрия — отпечаток пальца, лицо. Часто используется вместе с другими методами (например, на смартфоне).</li>
+
+<h2>Практические советы безопасности❗</h2>
+      <ul>
+        <li>Не храните резервные коды в незашифрованных заметках в облаке.</li>
+        <li>Используйте менеджер паролей + уникальные пароли для каждого сервиса.</li>
+        <li>Для важных сервисов (почта, банки, соцсети) используйте аппаратный ключ (если есть возможность).</li>
+        <li>При смене/потере телефона заранее перенесите/деактивируйте 2FA или сохраните резервные коды.</li>
+        <li>Настройте несколько методов восстановления (например, резервный телефон, резервный e-mail, аппаратный ключ).</li>
+
       </ul>
       <h2>Задания</h2>
       <ol>
@@ -27,164 +52,200 @@
       <div class='quiz'>
         <form id='quizForm'>
           <ol>
-            <li>Вопрос 1?
+            <li>1. Что такое 2FA?
               <br>
               <label>
-                <input type='radio' name='q1' value='a'> Правильный ответ</label>
+                <input type='radio' name='q1' value='a'> Новый пароль</label>
               <br>
               <label>
-                <input type='radio' name='q1' value='b'> Неправильный</label>
+                <input type='radio' name='q1' value='b'> Два уровня защиты</label>
               <br>
               <label>
-                <input type='radio' name='q1' value='c'> Неправильный</label>
+                <input type='radio' name='q1' value='c'> Вирус</label>
+              <br>
+              <label>
+                <input type='radio' name='q1' value='d'> Фильтр</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 2?
+            <li>2. Пример второго фактора:
               <br>
               <label>
-                <input type='radio' name='q2' value='a'> Правильный ответ</label>
+                <input type='radio' name='q2' value='a'> Логин</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='b'> Неправильный</label>
+                <input type='radio' name='q2' value='b'> Пароль</label>
               <br>
               <label>
-                <input type='radio' name='q2' value='c'> Неправильный</label>
+                <input type='radio' name='q2' value='c'> SMS-код</label>
+              <br>
+              <label>
+                <input type='radio' name='q2' value='d'> Почтовый индекс</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 3?
+            <li>3. Что лучше:
               <br>
               <label>
-                <input type='radio' name='q3' value='a'> Правильный ответ</label>
+                <input type='radio' name='q3' value='a'> Пароль + SMS </label>
               <br>
               <label>
-                <input type='radio' name='q3' value='b'> Неправильный</label>
+                <input type='radio' name='q3' value='b'> Пароль только</label>
               <br>
               <label>
-                <input type='radio' name='q3' value='c'> Неправильный</label>
+                <input type='radio' name='q3' value='c'> Логин только</label>
+              <br>
+              <label>
+                <input type='radio' name='q3' value='d'> Пароль «123456»</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 4?
+            <li>4. Какой способ надёжнее?
               <br>
               <label>
-                <input type='radio' name='q4' value='a'> Правильный ответ</label>
+                <input type='radio' name='q4' value='a'> SMS</label>
               <br>
               <label>
-                <input type='radio' name='q4' value='b'> Неправильный</label>
+                <input type='radio' name='q4' value='b'> Приложение-аутентификатор</label>
               <br>
               <label>
-                <input type='radio' name='q4' value='c'> Неправильный</label>
+                <input type='radio' name='q4' value='c'> Звонок</label>
+              <br>
+              <label>
+                <input type='radio' name='q4' value='d'> Email</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 5?
+            <li>5. Где включать 2FA?
               <br>
               <label>
-                <input type='radio' name='q5' value='a'> Правильный ответ</label>
+                <input type='radio' name='q5' value='a'> В соцсетях</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='b'> Неправильный</label>
+                <input type='radio' name='q5' value='b'> В почте</label>
               <br>
               <label>
-                <input type='radio' name='q5' value='c'> Неправильный</label>
+                <input type='radio' name='q5' value='c'> В банке</label>
+              <br>
+              <label>
+                <input type='radio' name='q5' value='d'> Везде</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 6?
+            <li>6. Что значит «токен безопасности»?
               <br>
               <label>
-                <input type='radio' name='q6' value='a'> Правильный ответ</label>
+                <input type='radio' name='q6' value='a'> Пластиковая карта</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='b'> Неправильный</label>
+                <input type='radio' name='q6' value='b'> Физический ключ</label>
               <br>
               <label>
-                <input type='radio' name='q6' value='c'> Неправильный</label>
+                <input type='radio' name='q6' value='c'> Пароль</label>
+              <br>
+              <label>
+                <input type='radio' name='q6' value='d'> QR-код</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 7?
+            <li>7. Чем плоха только почта?
               <br>
               <label>
-                <input type='radio' name='q7' value='a'> Правильный ответ</label>
+                <input type='radio' name='q7' value='a'> Может быть взломана</label>
               <br>
               <label>
-                <input type='radio' name='q7' value='b'> Неправильный</label>
+                <input type='radio' name='q7' value='b'> Нет минусов</label>
               <br>
               <label>
-                <input type='radio' name='q7' value='c'> Неправильный</label>
+                <input type='radio' name='q7' value='c'> Дорого</label>
+              <br>
+              <label>
+                <input type='radio' name='q7' value='d'> Долго</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 8?
+            <li>8. Что нужно при входе с 2FA?
               <br>
               <label>
-                <input type='radio' name='q8' value='a'> Правильный ответ</label>
+                <input type='radio' name='q8' value='a'> Только пароль</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='b'> Неправильный</label>
+                <input type='radio' name='q8' value='b'> Пароль + код</label>
               <br>
               <label>
-                <input type='radio' name='q8' value='c'> Неправильный</label>
+                <input type='radio' name='q8' value='c'> Код друга</label>
+              <br>
+              <label>
+                <input type='radio' name='q8' value='d'> Дата рождения</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 9?
+            <li>9. Можно ли выключить 2FA?
               <br>
               <label>
-                <input type='radio' name='q9' value='a'> Правильный ответ</label>
+                <input type='radio' name='q9' value='a'> Можно, но это опасно</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='b'> Неправильный</label>
+                <input type='radio' name='q9' value='b'> Нельзя</label>
               <br>
               <label>
-                <input type='radio' name='q9' value='c'> Неправильный</label>
+                <input type='radio' name='q9' value='c'> Нужно всегда</label>
+              <br>
+              <label>
+                <input type='radio' name='q9' value='d'> Только в банке</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 10?
+            <li>10. Зачем нужна 2FA?
               <br>
               <label>
-                <input type='radio' name='q10' value='a'> Правильный ответ</label>
+                <input type='radio' name='q10' value='a'> Чтобы ускорить вход</label>
               <br>
               <label>
-                <input type='radio' name='q10' value='b'> Неправильный</label>
+                <input type='radio' name='q10' value='b'> Чтобы защитить аккаунт</label>
               <br>
               <label>
-                <input type='radio' name='q10' value='c'> Неправильный</label>
+                <input type='radio' name='q10' value='c'> Чтобы скрыть пароль</label>
+              <br>
+              <label>
+                <input type='radio' name='q10' value='d'> Чтобы запомнить пароль</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 11?
+            <li>11. Что значит «одноразовый код»?
               <br>
               <label>
-                <input type='radio' name='q11' value='a'> Правильный ответ</label>
+                <input type='radio' name='q11' value='a'> Код, который используется всегда</label>
               <br>
               <label>
-                <input type='radio' name='q11' value='b'> Неправильный</label>
+                <input type='radio' name='q11' value='b'> Код для друзей</label>
               <br>
               <label>
-                <input type='radio' name='q11' value='c'> Неправильный</label>
+                <input type='radio' name='q11' value='c'> Код, действующий один раз</label>
+              <br>
+              <label>
+                <input type='radio' name='q11' value='d'> Случайное число</label>
               <br>
             </li>
             <br>
-            <li>Вопрос 12?
+            <li>12. Когда нужно менять телефон при 2FA?
               <br>
               <label>
-                <input type='radio' name='q12' value='a'> Правильный ответ</label>
+                <input type='radio' name='q12' value='a'> Никогда</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='b'> Неправильный</label>
+                <input type='radio' name='q12' value='b'> Раз в месяц</label>
               <br>
               <label>
-                <input type='radio' name='q12' value='c'> Неправильный</label>
+                <input type='radio' name='q12' value='c'> Каждую неделю</label>
+              <br>
+              <label>
+                <input type='radio' name='q12' value='d'> Если потерян </label>
               <br>
             </li>
             <br>
           </ol>
-          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "a", "q3": "a", "q4": "a", "q5": "a", "q6": "a", "q7": "a", "q8": "a", "q9": "a", "q10": "a", "q11": "a", "q12": "a"},lessonKey:"lesson2",passPercent:60})'>Проверить результат</button>
+          <button type='button' class='btn' onclick='checkQuizGeneric({answers:{"q1": "a", "q2": "b", "q3": "c", "q4": "b", "q5": "d", "q6": "b", "q7": "a", "q8": "b", "q9": "a", "q10": "b", "q11": "c", "q12": "d"},lessonKey:"lesson2",passPercent:60})'>Проверить результат</button>
         </form>
         <p id='result'></p>
         <button id='nextLesson' class='btn' style='display:none' onclick='location.href="lesson3.html"'>Перейти далее</button>
