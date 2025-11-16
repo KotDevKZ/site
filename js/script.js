@@ -90,17 +90,20 @@
         const chosenLabel = chosen.closest("label");
         if (chosenLabel) {
           if (chosen.value === right) {
-            chosenLabel.classList.add("q-right");   // зелёный
-          } else {
-            chosenLabel.classList.add("q-wrong");   // красный
-          }
-        }
-      }
+            // ✅ выбрал верный — подсвечиваем зелёным
+            chosenLabel.classList.add("q-right");
 
-      if (correctInput) {
-        const correctLabel = correctInput.closest("label");
-        if (correctLabel) {
-          correctLabel.classList.add("right-answer"); // обводка правильного
+            // дополнительно можем подчеркнуть, что это правильный ответ
+            if (correctInput) {
+              const correctLabel = correctInput.closest("label");
+              if (correctLabel) {
+                correctLabel.classList.add("right-answer");
+              }
+            }
+          } else {
+            // ❌ выбрал неверный — только красный, без подсказки правильного варианта
+            chosenLabel.classList.add("q-wrong");
+          }
         }
       }
     });
@@ -191,5 +194,5 @@
 
   // Сделать функции доступными из HTML
   window.getResults = getResults;
-  window.checkQuizGeneric = checkQuizGeneric;/**/
+  window.checkQuizGeneric = checkQuizGeneric;
 })();
