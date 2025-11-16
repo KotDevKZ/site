@@ -191,5 +191,5 @@
 
   // Сделать функции доступными из HTML
   window.getResults = getResults;
-  window.checkQuizGeneric = checkQuizGeneric;
+  window.checkQuizGeneric = checkQuizGeneric;/**/
 })();
