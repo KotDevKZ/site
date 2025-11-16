@@ -53,18 +53,35 @@
 
   // Подсветка правильного/неправильного по каждому вопросу
   function markFeedback(form, answers) {
-    // снимем прошлую подсветку
-    form.querySelectorAll("li").forEach(li => li.classList.remove("q-right","q-wrong"));
-    // отметим текущую
+    // Снимаем прошлую подсветку и с li, и с label
+    form.querySelectorAll(".q-right,.q-wrong,.right-answer").forEach(el => {
+      el.classList.remove("q-right", "q-wrong", "right-answer");
+    });
+
     Object.entries(answers).forEach(([q, right]) => {
-      const li = form.querySelector(`input[name="${q}"]`)?.closest("li");
-      if (!li) return;
       const chosen = form.querySelector(`input[name="${q}"]:checked`);
-      if (!chosen) return;
-      li.classList.add(chosen.value === right ? "q-right" : "q-wrong");
-      // покажем, какой вариант был правильный
-      const rightInput = form.querySelector(`input[name="${q}"][value="${right}"]`);
-      rightInput?.closest("label")?.classList.add("right-answer");
+      const correctInput = form.querySelector(`input[name="${q}"][value="${right}"]`);
+
+      if (chosen) {
+        const chosenLabel = chosen.closest("label");
+        if (!chosenLabel) return;
+
+        // если выбрали верно — подсвечиваем зелёным
+        if (chosen.value === right) {
+          chosenLabel.classList.add("q-right");
+        } else {
+          // если выбрали неверно — красным
+          chosenLabel.classList.add("q-wrong");
+        }
+      }
+
+      // всегда подсвечиваем правильный вариант (можно тем же зелёным или чуть иначе)
+      if (correctInput) {
+        const correctLabel = correctInput.closest("label");
+        if (correctLabel) {
+          correctLabel.classList.add("right-answer");
+        }
+      }
     });
   }
 

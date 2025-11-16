@@ -295,3 +295,24 @@ hr{ border:0; height:1px; background: rgba(0,0,0,.08); margin: 18px 0 }
 @media (prefers-reduced-motion: reduce){
   *{ transition:none !important; animation:none !important }
 }
+
+/* выбранный правильный ответ */
+label.q-right {
+  background-color: #c6f6c6;   /* светло-зелёный */
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+/* выбранный неправильный ответ */
+label.q-wrong {
+  background-color: #fed7d7;   /* светло-красный */
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+/* правильный вариант (показать, что он верный) */
+label.right-answer {
+  outline: 2px dashed #2f855a;
+  outline-offset: 2px;
+  font-weight: 600;
+}
