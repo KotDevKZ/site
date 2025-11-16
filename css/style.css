@@ -52,6 +52,16 @@ p{margin:.25rem 0 1rem;color:var(--muted)}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
+p {
+    margin: .25rem 0 5px;
+    color: var(--muted);
+}
+
+h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .container{
   max-width:1200px;
   margin: 40px auto;
@@ -435,7 +445,7 @@ html.dark .pw-item {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin: 16px 0;
+  margin: 5px 0;
 }
 
 @media (min-width: 768px) {
