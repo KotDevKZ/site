@@ -9,17 +9,22 @@
     localStorage.setItem(STORE_KEY, JSON.stringify(obj));
   }
 
-  // Подсчёт теста на страницах уроков
+  // Подсчёт теста на страницах уроков + проверка всех ответов + подсветка + конфетти
   function checkQuizGeneric({ answers, lessonKey, passPercent }) {
     const form = document.getElementById("quizForm");
     if (!form) return;
 
+    // требуем, чтобы были ответы на все вопросы
+    if (!requireAllAnswered(form, answers)) return;
+
     const total = Object.keys(answers).length;
     let correct = 0;
+
     for (const [q, right] of Object.entries(answers)) {
       const chosen = form.querySelector(`input[name="${q}"]:checked`);
       if (chosen && chosen.value === right) correct++;
     }
+
     const percent = Math.round((correct / total) * 100);
 
     const results = getResults();
@@ -31,9 +36,28 @@
       resEl.textContent = `Результат: ${correct}/${total} (${percent}%). Порог: ${passPercent}%`;
       resEl.style.fontWeight = "600";
     }
+
     const nextBtn = document.getElementById("nextLesson");
-    if (nextBtn && percent >= passPercent) nextBtn.style.display = "inline-block";
+    if (nextBtn && percent >= passPercent) {
+      nextBtn.style.display = "inline-block";
+    }
+
+    // ⭐ подсветка выбранных и правильных ответов
+    markFeedback(form, answers);
+
+    // 🎉 конфетти при успешном прохождении
+    if (percent >= passPercent) {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
+      s.onload = () => window.confetti && window.confetti({
+        particleCount: 140,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      document.head.appendChild(s);
+    }
   }
+
 
   // Инициализация главной страницы (приветствие + сводка прогресса)
   function renderIndex() {
@@ -53,7 +77,7 @@
 
   // Подсветка правильного/неправильного по каждому вопросу
   function markFeedback(form, answers) {
-    // Снимаем прошлую подсветку и с li, и с label
+    // снимаем прошлую подсветку
     form.querySelectorAll(".q-right,.q-wrong,.right-answer").forEach(el => {
       el.classList.remove("q-right", "q-wrong", "right-answer");
     });
@@ -64,22 +88,19 @@
 
       if (chosen) {
         const chosenLabel = chosen.closest("label");
-        if (!chosenLabel) return;
-
-        // если выбрали верно — подсвечиваем зелёным
-        if (chosen.value === right) {
-          chosenLabel.classList.add("q-right");
-        } else {
-          // если выбрали неверно — красным
-          chosenLabel.classList.add("q-wrong");
+        if (chosenLabel) {
+          if (chosen.value === right) {
+            chosenLabel.classList.add("q-right");   // зелёный
+          } else {
+            chosenLabel.classList.add("q-wrong");   // красный
+          }
         }
       }
 
-      // всегда подсвечиваем правильный вариант (можно тем же зелёным или чуть иначе)
       if (correctInput) {
         const correctLabel = correctInput.closest("label");
         if (correctLabel) {
-          correctLabel.classList.add("right-answer");
+          correctLabel.classList.add("right-answer"); // обводка правильного
         }
       }
     });
@@ -113,26 +134,6 @@
 
     form.querySelectorAll(".q-right,.q-wrong,.right-answer")
         .forEach(el => el.classList.remove("q-right","q-wrong","right-answer"));
-  };
-
-  // Улучшаем checkQuizGeneric: требуем все ответы + подсветка + конфетти при прохождении
-  const _origCheck = window.checkQuizGeneric;
-  window.checkQuizGeneric = function(opts) {
-    const form = document.getElementById("quizForm");
-    if (!form) return;
-    if (!requireAllAnswered(form, opts.answers)) return;
-    _origCheck(opts);
-    markFeedback(form, opts.answers);
-
-    const results = window.getResults?.() || {};
-    const r = results[opts.lessonKey];
-    if (r && r.percent >= opts.passPercent) {
-      // конфетти (подтянем либу динамически)
-      const s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js";
-      s.onload = () => window.confetti && window.confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 } });
-      document.head.appendChild(s);
-    }
   };
 
   // автоматически добавим кнопку «Сбросить попытку» под результатом (если её нет)
