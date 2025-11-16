@@ -359,6 +359,11 @@ label.right-answer {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+div#passwordSort {
+    display: flex;
+    flex-direction: column;
+}
+
 html.dark .pw-column {
   background: rgba(255, 255, 255, 0.03);
   border-color: rgba(255, 255, 255, 0.1);
