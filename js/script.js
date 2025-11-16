@@ -183,6 +183,187 @@
     });
   })();
 
+  // === Задание "Распредели пароли по полям" (Урок 1) ===
+
+  const PW_SORT_COOKIE = "lesson1_pw_sort_state";
+
+  const STRONG_PASSWORDS = [
+    "T!m3Z83#kL",
+    "R!nb0w7_Vx2",
+    "Zx7!nP4rVq",
+    "Luna@27Kz!",
+    "S3cure!Key#"
+  ];
+
+  const WEAK_PASSWORDS = [
+    "ivan2008",
+    "password",
+    "admin",
+    "qwerty",
+    "123456"
+  ];
+
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = name + "=" + encodeURIComponent(value) +
+      ";expires=" + d.toUTCString() + ";path=/";
+  }
+
+  function getCookie(name) {
+    const parts = document.cookie.split(";");
+    for (const part of parts) {
+      const trimmed = part.trim();
+      if (trimmed.startsWith(name + "=")) {
+        return decodeURIComponent(trimmed.substring(name.length + 1));
+      }
+    }
+    return null;
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  }
+
+  function savePwSortState() {
+    const container = document.getElementById("passwordSort");
+    if (!container) return;
+
+    const state = {};
+    container.querySelectorAll(".pw-item").forEach(item => {
+      const pw = item.dataset.pw;
+      const parentId = item.parentElement.id;
+      if (parentId === "pwStrong") state[pw] = "strong";
+      else if (parentId === "pwWeak") state[pw] = "weak";
+      else state[pw] = "pool";
+    });
+
+    setCookie(PW_SORT_COOKIE, JSON.stringify(state), 365);
+  }
+
+  function loadPwSortState() {
+    const container = document.getElementById("passwordSort");
+    if (!container) return;
+
+    const pool = document.getElementById("pwPool");
+    const strong = document.getElementById("pwStrong");
+    const weak = document.getElementById("pwWeak");
+    if (!pool || !strong || !weak) return;
+
+    const raw = getCookie(PW_SORT_COOKIE);
+    if (!raw) return;
+
+    let state;
+    try {
+      state = JSON.parse(raw);
+    } catch {
+      return;
+    }
+
+    Object.entries(state).forEach(([pw, place]) => {
+      const item = container.querySelector(`.pw-item[data-pw="${pw}"]`);
+      if (!item) return;
+      if (place === "strong") strong.appendChild(item);
+      else if (place === "weak") weak.appendChild(item);
+      else pool.appendChild(item);
+    });
+  }
+
+  function initPasswordSort() {
+    const container = document.getElementById("passwordSort");
+    if (!container) return; // не на этой странице
+
+    const pool = document.getElementById("pwPool");
+    const strong = document.getElementById("pwStrong");
+    const weak = document.getElementById("pwWeak");
+    const msg = document.getElementById("pwMessage");
+    const checkBtn = document.getElementById("pwCheckBtn");
+    const resetBtn = document.getElementById("pwResetBtn");
+
+    if (!pool || !strong || !weak || !checkBtn || !resetBtn) return;
+
+    // dragstart / dragend для элементов
+    container.querySelectorAll(".pw-item").forEach(item => {
+      item.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", item.dataset.pw);
+      });
+    });
+
+    function makeDropZone(zone) {
+      zone.addEventListener("dragover", e => {
+        e.preventDefault();
+      });
+      zone.addEventListener("drop", e => {
+        e.preventDefault();
+        const pw = e.dataTransfer.getData("text/plain");
+        if (!pw) return;
+        const item = container.querySelector(`.pw-item[data-pw="${pw}"]`);
+        if (!item) return;
+        zone.appendChild(item);
+        savePwSortState();
+      });
+    }
+
+    makeDropZone(pool);
+    makeDropZone(strong);
+    makeDropZone(weak);
+
+    // восстановим состояние из куки
+    loadPwSortState();
+
+    // Проверка
+    checkBtn.addEventListener("click", () => {
+      const allItems = Array.from(container.querySelectorAll(".pw-item"));
+      const poolItems = allItems.filter(i => i.parentElement.id === "pwPool");
+
+      msg.classList.remove("correct", "incorrect");
+
+      if (poolItems.length > 0) {
+        msg.textContent = "Распредели все пароли по полям.";
+        msg.classList.add("incorrect");
+        return;
+      }
+
+      let isCorrect = true;
+
+      allItems.forEach(item => {
+        const pw = item.dataset.pw;
+        const parentId = item.parentElement.id;
+
+        if (STRONG_PASSWORDS.includes(pw) && parentId !== "pwStrong") {
+          isCorrect = false;
+        }
+        if (WEAK_PASSWORDS.includes(pw) && parentId !== "pwWeak") {
+          isCorrect = false;
+        }
+      });
+
+      if (isCorrect) {
+        msg.textContent = "Правильно!";
+        msg.classList.add("correct");
+      } else {
+        msg.textContent = "Неверно.";
+        msg.classList.add("incorrect");
+      }
+
+      savePwSortState();
+    });
+
+    // Сброс только этого задания
+    resetBtn.addEventListener("click", () => {
+      container.querySelectorAll(".pw-item").forEach(item => {
+        pool.appendChild(item);
+      });
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+      deleteCookie(PW_SORT_COOKIE);
+    });
+  }
+
+  // Инициализация задания при загрузке Урока 1
+  document.addEventListener("DOMContentLoaded", initPasswordSort);
+
+
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".lesson-thumb img").forEach(img => {
       img.loading = "lazy";

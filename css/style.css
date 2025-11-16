@@ -316,3 +316,105 @@ label.right-answer {
   outline-offset: 2px;
   font-weight: 600;
 }
+
+/* === Задание "Распредели в поля" === */
+
+.pw-sort {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+@media (min-width: 768px) {
+  .pw-sort {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.pw-pool,
+.pw-columns {
+  flex: 1;
+}
+
+.pw-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .pw-columns {
+    flex-direction: row;
+  }
+}
+
+.pw-column {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+html.dark .pw-column {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.pw-list,
+.pw-drop {
+  min-height: 60px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px dashed rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+html.dark .pw-list,
+html.dark .pw-drop {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pw-item {
+  cursor: grab;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 14px;
+  background: #e5e7eb;
+}
+
+.pw-item:active {
+  cursor: grabbing;
+}
+
+html.dark .pw-item {
+  background: #4b5563;
+  color: #f9fafb;
+}
+
+.pw-actions {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.pw-message {
+  margin: 0;
+  font-weight: 600;
+}
+
+.pw-message.correct {
+  color: #15803d; /* зелёный */
+}
+
+.pw-message.incorrect {
+  color: #b91c1c; /* красный */
+}
+

@@ -55,10 +55,50 @@
 
       <h2>Задания</h2>
       <ol>
-        <li>Задание 1</li>
+        <li>
+          <h3>Задание 1. Распредели пароли по полям</h3>
+          <p>Перетащи каждый пароль в подходящее поле.</p>
+
+          <div id="passwordSort" class="pw-sort">
+            <div class="pw-pool">
+              <h4>Все пароли</h4>
+              <div class="pw-list" id="pwPool">
+                <button class="pw-item" data-pw="T!m3Z83#kL" draggable="true">T!m3Z83#kL</button>
+                <button class="pw-item" data-pw="ivan2008" draggable="true">ivan2008</button>
+                <button class="pw-item" data-pw="R!nb0w7_Vx2" draggable="true">R!nb0w7_Vx2</button>
+                <button class="pw-item" data-pw="password" draggable="true">password</button>
+                <button class="pw-item" data-pw="Zx7!nP4rVq" draggable="true">Zx7!nP4rVq</button>
+                <button class="pw-item" data-pw="Luna@27Kz!" draggable="true">Luna@27Kz!</button>
+                <button class="pw-item" data-pw="admin" draggable="true">admin</button>
+                <button class="pw-item" data-pw="qwerty" draggable="true">qwerty</button>
+                <button class="pw-item" data-pw="123456" draggable="true">123456</button>
+                <button class="pw-item" data-pw="S3cure!Key#" draggable="true">S3cure!Key#</button>
+              </div>
+            </div>
+
+            <div class="pw-columns">
+              <div class="pw-column" data-type="strong">
+                <h4>Надёжный пароль</h4>
+                <div class="pw-drop" id="pwStrong"></div>
+              </div>
+              <div class="pw-column" data-type="weak">
+                <h4>Ненадёжный пароль</h4>
+                <div class="pw-drop" id="pwWeak"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pw-actions">
+            <button type="button" class="btn" id="pwCheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="pwResetBtn">Сбросить задание</button>
+            <p id="pwMessage" class="pw-message"></p>
+          </div>
+        </li>
+
         <li>Задание 2</li>
         <li>Задание 3</li>
       </ol>
+
       <h2>Тест</h2>
       <div class='quiz'>
         <form id='quizForm'>
