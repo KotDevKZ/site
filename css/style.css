@@ -346,6 +346,7 @@ label.right-answer {
 .pw-pool,
 .pw-columns {
   flex: 1;
+  width: -webkit-fill-available;
 }
 
 .pw-columns {
