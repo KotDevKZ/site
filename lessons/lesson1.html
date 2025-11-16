@@ -60,6 +60,17 @@
           <p>Перетащи каждый пароль в подходящее поле.</p>
 
           <div id="passwordSort" class="pw-sort">
+
+            <div class="pw-columns">
+              <div class="pw-column" data-type="strong">
+                <h4>Надёжный пароль</h4>
+                <div class="pw-drop" id="pwStrong"></div>
+              </div>
+              <div class="pw-column" data-type="weak">
+                <h4>Ненадёжный пароль</h4>
+                <div class="pw-drop" id="pwWeak"></div>
+              </div>
+            </div>
             <div class="pw-pool">
               <h4>Все пароли</h4>
               <div class="pw-list" id="pwPool">
@@ -73,17 +84,6 @@
                 <button class="pw-item" data-pw="qwerty" draggable="true">qwerty</button>
                 <button class="pw-item" data-pw="123456" draggable="true">123456</button>
                 <button class="pw-item" data-pw="S3cure!Key#" draggable="true">S3cure!Key#</button>
-              </div>
-            </div>
-
-            <div class="pw-columns">
-              <div class="pw-column" data-type="strong">
-                <h4>Надёжный пароль</h4>
-                <div class="pw-drop" id="pwStrong"></div>
-              </div>
-              <div class="pw-column" data-type="weak">
-                <h4>Ненадёжный пароль</h4>
-                <div class="pw-drop" id="pwWeak"></div>
               </div>
             </div>
           </div>

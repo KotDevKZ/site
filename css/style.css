@@ -342,6 +342,7 @@ label.right-answer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: -webkit-fill-available;
 }
 
 @media (min-width: 768px) {
