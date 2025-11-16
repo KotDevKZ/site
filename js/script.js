@@ -363,6 +363,182 @@
   // Инициализация задания при загрузке Урока 1
   document.addEventListener("DOMContentLoaded", initPasswordSort);
 
+  // === Задание 2 "Соотнеси пары" (Урок 1) ===
+
+  const MATCH_COOKIE = "lesson1_pw_match_state";
+
+  // правильные соответствия: пароль -> буква описания
+  const MATCH_CORRECT = {
+    "123456": "A",
+    "Qw!7pZr#9L": "B",
+    "password": "C",
+    "Luna@27Kz!": "D",
+    "ivan2008": "E"
+  };
+
+  function saveMatchState() {
+    const wrap = document.getElementById("matchPasswords");
+    if (!wrap) return;
+
+    const pool = document.getElementById("matchPool");
+    if (!pool) return;
+
+    const state = {};
+    wrap.querySelectorAll(".match-item").forEach(item => {
+      const key = item.dataset.key;
+      const parent = item.parentElement;
+
+      if (parent.id === "matchPool") {
+        state[key] = "pool";
+      } else if (parent.classList.contains("match-drop")) {
+        state[key] = parent.dataset.target || null;
+      } else {
+        state[key] = "pool";
+      }
+    });
+
+    setCookie(MATCH_COOKIE, JSON.stringify(state), 365);
+  }
+
+  function loadMatchState() {
+    const wrap = document.getElementById("matchPasswords");
+    if (!wrap) return;
+
+    const pool = document.getElementById("matchPool");
+    if (!pool) return;
+
+    const raw = getCookie(MATCH_COOKIE);
+    if (!raw) return;
+
+    let state;
+    try {
+      state = JSON.parse(raw);
+    } catch {
+      return;
+    }
+
+    Object.entries(state).forEach(([key, place]) => {
+      const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+      if (!item) return;
+
+      if (place === "pool" || !place) {
+        pool.appendChild(item);
+      } else {
+        const drop = wrap.querySelector(`.match-drop[data-target="${place}"]`);
+        if (drop) drop.appendChild(item);
+        else pool.appendChild(item);
+      }
+    });
+  }
+
+  function initMatchTask() {
+    const wrap = document.getElementById("matchPasswords");
+    if (!wrap) return; // не на этой странице
+
+    const pool = document.getElementById("matchPool");
+    const drops = wrap.querySelectorAll(".match-drop");
+    const checkBtn = document.getElementById("matchCheckBtn");
+    const resetBtn = document.getElementById("matchResetBtn");
+    const msg = document.getElementById("matchMessage");
+
+    if (!pool || !drops.length || !checkBtn || !resetBtn || !msg) return;
+
+    // dragstart для описаний
+    wrap.querySelectorAll(".match-item").forEach(item => {
+      item.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", item.dataset.key);
+      });
+    });
+
+    function makeDropZone(zone) {
+      zone.addEventListener("dragover", e => {
+        e.preventDefault();
+      });
+      zone.addEventListener("drop", e => {
+        e.preventDefault();
+        const key = e.dataTransfer.getData("text/plain");
+        if (!key) return;
+
+        const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+        if (!item) return;
+
+        // если в ячейке уже есть элемент — отправим его обратно в пул
+        if (zone !== pool) {
+          const existing = zone.querySelector(".match-item");
+          if (existing && existing !== item) {
+            pool.appendChild(existing);
+          }
+        }
+
+        zone.appendChild(item);
+        saveMatchState();
+      });
+    }
+
+    // пул и все ячейки — зоны сброса
+    makeDropZone(pool);
+    drops.forEach(makeDropZone);
+
+    // восстановим из куки
+    loadMatchState();
+
+    // Проверка
+    checkBtn.addEventListener("click", () => {
+      msg.classList.remove("correct", "incorrect");
+
+      const rows = wrap.querySelectorAll(".match-row");
+      let allFilled = true;
+
+      rows.forEach(row => {
+        const drop = row.querySelector(".match-drop");
+        const item = drop.querySelector(".match-item");
+        if (!item) allFilled = false;
+      });
+
+      if (!allFilled) {
+        msg.textContent = "Заполни все пары.";
+        msg.classList.add("incorrect");
+        return;
+      }
+
+      let ok = true;
+
+      rows.forEach(row => {
+        const pw = row.dataset.pw;
+        const drop = row.querySelector(".match-drop");
+        const item = drop.querySelector(".match-item");
+        const key = item?.dataset.key;
+
+        if (MATCH_CORRECT[pw] !== key) {
+          ok = false;
+        }
+      });
+
+      if (ok) {
+        msg.textContent = "Правильно!";
+        msg.classList.add("correct");
+      } else {
+        msg.textContent = "Неверно.";
+        msg.classList.add("incorrect");
+      }
+
+      saveMatchState();
+    });
+
+    // Сброс именно этого задания
+    resetBtn.addEventListener("click", () => {
+      wrap.querySelectorAll(".match-item").forEach(item => {
+        pool.appendChild(item);
+      });
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+      deleteCookie(MATCH_COOKIE);
+    });
+  }
+
+  // инициализация задания 2
+  document.addEventListener("DOMContentLoaded", initMatchTask);
+
 
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".lesson-thumb img").forEach(img => {

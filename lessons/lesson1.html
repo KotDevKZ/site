@@ -95,7 +95,68 @@
           </div>
         </li>
 
-        <li>Задание 2</li>
+        <li>
+          <h3>Задание 2. Соотнеси верные пары</h3>
+          <p>Перетащи описание к подходящему паролю.</p>
+
+          <div id="matchPasswords" class="match-task">
+            <!-- Левая колонка: все описания -->
+            <div class="match-left">
+              <h4>Все описания</h4>
+              <div class="match-pool" id="matchPool">
+                <button class="match-item" data-key="A" draggable="true">
+                  A) Очень короткий и простой — легко взломать
+                </button>
+                <button class="match-item" data-key="B" draggable="true">
+                  B) Сложный, содержит разные символы — надёжный
+                </button>
+                <button class="match-item" data-key="C" draggable="true">
+                  C) Распространённое слово, легко угадать
+                </button>
+                <button class="match-item" data-key="D" draggable="true">
+                  D) Надёжный пароль: буквы разного регистра, цифры, символы
+                </button>
+                <button class="match-item" data-key="E" draggable="true">
+                  E) Содержит личную информацию (имя и год рождения) — легко подобрать
+                </button>
+              </div>
+            </div>
+
+            <!-- Правая колонка: “таблица” с паролями -->
+            <div class="match-right">
+              <h4>Подбери описание к паролю</h4>
+              <div class="match-table">
+                <div class="match-row" data-pw="123456">
+                  <div class="match-cell match-label">123456</div>
+                  <div class="match-cell match-drop" data-target="123456"></div>
+                </div>
+                <div class="match-row" data-pw="Qw!7pZr#9L">
+                  <div class="match-cell match-label">Qw!7pZr#9L</div>
+                  <div class="match-cell match-drop" data-target="Qw!7pZr#9L"></div>
+                </div>
+                <div class="match-row" data-pw="password">
+                  <div class="match-cell match-label">password</div>
+                  <div class="match-cell match-drop" data-target="password"></div>
+                </div>
+                <div class="match-row" data-pw="Luna@27Kz!">
+                  <div class="match-cell match-label">Luna@27Kz!</div>
+                  <div class="match-cell match-drop" data-target="Luna@27Kz!"></div>
+                </div>
+                <div class="match-row" data-pw="ivan2008">
+                  <div class="match-cell match-label">ivan2008</div>
+                  <div class="match-cell match-drop" data-target="ivan2008"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="match-actions">
+            <button type="button" class="btn" id="matchCheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="matchResetBtn">Сбросить задание</button>
+            <p id="matchMessage" class="match-message"></p>
+          </div>
+        </li>
+
         <li>Задание 3</li>
       </ol>
 
