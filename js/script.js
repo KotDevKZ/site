@@ -1093,6 +1093,53 @@
     initPhishReportTask();
   });
 
+  // === Урок 5: свободный ответ про социальную инженерию ===
+
+  const L5_SOCENG_COOKIE = "lesson5_soceng_answer";
+
+  function initLesson5FreeAnswer() {
+    const wrap    = document.getElementById("lesson5Task");
+    if (!wrap) return; // не на этой странице
+
+    const textarea = document.getElementById("lesson5Answer");
+    const btn      = document.getElementById("lesson5SubmitBtn");
+    const status   = document.getElementById("lesson5Status");
+
+    if (!textarea || !btn || !status) return;
+
+    // если уже есть сохранённый ответ — показываем и блокируем повторный ввод
+    const saved = getCookie(L5_SOCENG_COOKIE);
+    if (saved) {
+      textarea.value = saved;
+      textarea.disabled = true;
+      btn.disabled = true;
+      status.textContent = "Ответ сохранён.";
+      status.classList.add("correct");
+    }
+
+    btn.addEventListener("click", () => {
+      const value = textarea.value.trim();
+
+      if (!value) {
+        status.textContent = "Напиши хотя бы одно предложение.";
+        status.classList.remove("correct");
+        status.classList.add("incorrect");
+        return;
+      }
+
+      setCookie(L5_SOCENG_COOKIE, value, 365);
+
+      textarea.disabled = true;
+      btn.disabled = true;
+      status.textContent = "Ответ сохранён.";
+      status.classList.remove("incorrect");
+      status.classList.add("correct");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initLesson5FreeAnswer);
+
+
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
 

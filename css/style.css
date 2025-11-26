@@ -751,3 +751,22 @@ html.dark .phish-email {
 html.dark .phish-choice__option {
   color: #f9fafb;
 }
+
+.free-answer textarea {
+  width: 100%;
+  max-width: 100%;
+  min-height: 220px;
+  padding: 18px 20px;
+  border-radius: 26px;
+  border: 1px solid rgba(0,0,0,.15);
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--card-solid);
+  color: var(--ink);
+  outline: none;
+  resize: vertical;
+}
+
+.free-answer textarea:disabled {
+  opacity: .7;
+}
