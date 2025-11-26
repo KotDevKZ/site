@@ -53,10 +53,71 @@
 
       <h2>Задания</h2>
       <ol>
-        <li>Задание 1</li>
-        <li>Задание 2</li>
-        <li>Задание 3</li>
+        <!-- Задание 1 -->
+        <li>
+          <h3>Задание 1. Найди фишинговое письмо</h3>
+          <p>Выбери, какое из писем является фишинговым, затем нажми «Проверить».</p>
+
+          <div id="phishEmails" class="phish-emails">
+            <!-- Письмо 1 (фишинговое) -->
+            <button type="button" class="phish-email" data-id="1">
+              <p><strong>От:</strong> support@onlineschool-security.com</p>
+              <p><strong>Кому:</strong> ivan.petrov@example.com</p>
+              <p><strong>Тема:</strong> Срочно: подтвердите доступ к вашей учётной записи или она будет заблокирована</p>
+              <p>Здравствуйте, Иван!</p>
+              <p>Мы обнаружили подозрительную активность в вашей учётной записи школьного портала. 
+                 Для защиты вашего аккаунта немедленно подтвердите свои данные — перейдите по ссылке и 
+                 войдите в систему: <br>
+                 <code>http://secure-login.verify.school-portal.example/confirm</code>
+              </p>
+              <p>Если вы не подтвердите данные в течение 24 часов, доступ к вашей учётной записи будет
+                 временно заблокирован.</p>
+              <p>Служба поддержки безопасности</p>
+            </button>
+
+            <!-- Письмо 2 (нормальное) -->
+            <button type="button" class="phish-email" data-id="2">
+              <p><strong>Тема:</strong> Уведомление по безопасности вашей учётной записи</p>
+              <p>Здравствуйте, Иван!</p>
+              <p>Это письмо от службы поддержки школьного портала. Недавно была попытка входа в вашу
+                 учётную запись с нового устройства.</p>
+              <p>Если это были вы — никаких действий не требуется.</p>
+              <p>Если вы не узнаёте эту активность, пожалуйста:</p>
+              <ol>
+                <li>Зайдите на сайт портала вручную, введя адрес в браузере.</li>
+                <li>Смените пароль в разделе «Мой профиль → Безопасность».</li>
+                <li>При необходимости свяжитесь со службой поддержки.</li>
+              </ol>
+              <p>Служба поддержки школьного портала</p>
+            </button>
+          </div>
+
+          <div class="pw-actions">
+            <button type="button" class="btn" id="phishEmailCheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="phishEmailResetBtn">Сбросить</button>
+            <p id="phishEmailMessage" class="pw-message"></p>
+          </div>
+        </li>
+
+        <!-- Задание 2 -->
+        <li>
+          <h3>Задание 2. Куда сообщить о фишинге?</h3>
+          <p>Можно выбрать несколько вариантов.</p>
+
+          <div id="phishReport" class="phish-choice">
+            <button type="button" class="phish-choice__option" data-id="police">В полицию</button>
+            <button type="button" class="phish-choice__option" data-id="bank">В свой банк</button>
+            <button type="button" class="phish-choice__option" data-id="comments">В комментарии</button>
+          </div>
+
+          <div class="pw-actions">
+            <button type="button" class="btn" id="phishReportCheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="phishReportResetBtn">Сбросить</button>
+            <p id="phishReportMessage" class="pw-message"></p>
+          </div>
+        </li>
       </ol>
+
       <h2>Тест</h2>
       <div class='quiz'>
         <form id='quizForm'>

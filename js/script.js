@@ -864,6 +864,234 @@
     initMalwareDefsTask();
   });
 
+  // === Урок 4. Задание 1 — Найди фишинговое письмо ===
+
+  const PHISH_EMAIL_COOKIE = "lesson4_email_state";
+  const PHISH_REPORT_COOKIE = "lesson4_report_state";
+
+  function loadPhishEmailState() {
+    const raw = getCookie(PHISH_EMAIL_COOKIE);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+
+  function savePhishEmailState(state) {
+    setCookie(PHISH_EMAIL_COOKIE, JSON.stringify(state), 365);
+  }
+
+  function applyPhishEmailUI(state, root, msgEl) {
+    if (!root) return;
+    const blocks = root.querySelectorAll(".phish-email");
+
+    blocks.forEach(b => {
+      b.classList.remove("selected", "correct", "incorrect");
+      if (state?.selected === b.dataset.id) {
+        b.classList.add("selected");
+      }
+    });
+
+    if (!msgEl) return;
+
+    msgEl.textContent = "";
+    msgEl.classList.remove("correct", "incorrect");
+
+    if (!state || !state.checked) return;
+
+    const isCorrect = state.correct;
+    const selectedBlock = state.selected
+      ? root.querySelector(`.phish-email[data-id="${state.selected}"]`)
+      : null;
+
+    if (selectedBlock) {
+      selectedBlock.classList.add(isCorrect ? "correct" : "incorrect");
+    }
+
+    if (isCorrect) {
+      msgEl.textContent = "Верно: это фишинговое письмо.";
+      msgEl.classList.add("correct");
+    } else {
+      msgEl.textContent = "Неверно. Попробуй ещё раз внимательно прочитать письма.";
+      msgEl.classList.add("incorrect");
+    }
+  }
+
+  function initPhishEmailTask() {
+    const root = document.getElementById("phishEmails");
+    if (!root) return;
+
+    const msgEl = document.getElementById("phishEmailMessage");
+    const checkBtn = document.getElementById("phishEmailCheckBtn");
+    const resetBtn = document.getElementById("phishEmailResetBtn");
+    const blocks = root.querySelectorAll(".phish-email");
+
+    if (!blocks.length || !checkBtn || !resetBtn || !msgEl) return;
+
+    // восстановление из куки
+    let state = loadPhishEmailState() || { selected: null, checked: false, correct: false };
+    applyPhishEmailUI(state, root, msgEl);
+
+    // выбор письма
+    blocks.forEach(block => {
+      block.addEventListener("click", () => {
+        state.selected = block.dataset.id;
+        state.checked = false;
+        applyPhishEmailUI(state, root, msgEl);
+        savePhishEmailState(state);
+      });
+    });
+
+    // проверка
+    checkBtn.addEventListener("click", () => {
+      msgEl.classList.remove("correct", "incorrect");
+
+      if (!state.selected) {
+        msgEl.textContent = "Сначала выбери письмо.";
+        msgEl.classList.add("incorrect");
+        return;
+      }
+
+      // правильное — первое письмо (id="1")
+      const isCorrect = state.selected === "1";
+
+      state.checked = true;
+      state.correct = isCorrect;
+
+      applyPhishEmailUI(state, root, msgEl);
+      savePhishEmailState(state);
+    });
+
+    // сброс
+    resetBtn.addEventListener("click", () => {
+      state = { selected: null, checked: false, correct: false };
+      deleteCookie(PHISH_EMAIL_COOKIE);
+      applyPhishEmailUI(state, root, msgEl);
+    });
+  }
+
+  // === Урок 4. Задание 2 — Куда сообщить о фишинге ===
+
+  const PHISH_REPORT_CORRECT = ["police", "bank"]; // правильные варианты
+
+  function loadPhishReportState() {
+    const raw = getCookie(PHISH_REPORT_COOKIE);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+  }
+
+  function savePhishReportState(state) {
+    setCookie(PHISH_REPORT_COOKIE, JSON.stringify(state), 365);
+  }
+
+  function applyPhishReportUI(state, root, msgEl) {
+    if (!root) return;
+    const opts = root.querySelectorAll(".phish-choice__option");
+
+    opts.forEach(btn => {
+      const id = btn.dataset.id;
+      btn.classList.remove("active", "correct", "incorrect");
+      if (state?.selected?.includes(id)) {
+        btn.classList.add("active");
+      }
+    });
+
+    if (!msgEl) return;
+
+    msgEl.textContent = "";
+    msgEl.classList.remove("correct", "incorrect");
+
+    if (!state || !state.checked) return;
+
+    const selected = new Set(state.selected || []);
+
+    opts.forEach(btn => {
+      const id = btn.dataset.id;
+      if (!selected.has(id)) return;
+      if (PHISH_REPORT_CORRECT.includes(id)) {
+        btn.classList.add("correct");
+      } else {
+        btn.classList.add("incorrect");
+      }
+    });
+
+    if (state.correct) {
+      msgEl.textContent = "Верно! Сообщать можно, например, в банк и/или в полицию.";
+      msgEl.classList.add("correct");
+    } else {
+      msgEl.textContent = "Не совсем так. Подумай, кто реально может помочь в ситуации с фишингом.";
+      msgEl.classList.add("incorrect");
+    }
+  }
+
+  function initPhishReportTask() {
+    const root = document.getElementById("phishReport");
+    if (!root) return;
+
+    const msgEl = document.getElementById("phishReportMessage");
+    const checkBtn = document.getElementById("phishReportCheckBtn");
+    const resetBtn = document.getElementById("phishReportResetBtn");
+    const opts = root.querySelectorAll(".phish-choice__option");
+
+    if (!opts.length || !checkBtn || !resetBtn || !msgEl) return;
+
+    let state = loadPhishReportState() || { selected: [], checked: false, correct: false };
+    applyPhishReportUI(state, root, msgEl);
+
+    // выбор нескольких вариантов
+    opts.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.id;
+        const set = new Set(state.selected || []);
+        if (set.has(id)) set.delete(id); else set.add(id);
+        state.selected = Array.from(set);
+        state.checked = false;
+        applyPhishReportUI(state, root, msgEl);
+        savePhishReportState(state);
+      });
+    });
+
+    // проверка
+    checkBtn.addEventListener("click", () => {
+      msgEl.classList.remove("correct", "incorrect");
+
+      if (!state.selected || !state.selected.length) {
+        msgEl.textContent = "Выбери хотя бы один вариант.";
+        msgEl.classList.add("incorrect");
+        return;
+      }
+
+      const selectedSet = new Set(state.selected);
+      let allGood = true;
+
+      // все правильные должны быть выбраны
+      PHISH_REPORT_CORRECT.forEach(id => {
+        if (!selectedSet.has(id)) allGood = false;
+      });
+
+      // и не должно быть лишних
+      state.selected.forEach(id => {
+        if (!PHISH_REPORT_CORRECT.includes(id)) allGood = false;
+      });
+
+      state.checked = true;
+      state.correct = allGood;
+
+      applyPhishReportUI(state, root, msgEl);
+      savePhishReportState(state);
+    });
+
+    // сброс
+    resetBtn.addEventListener("click", () => {
+      state = { selected: [], checked: false, correct: false };
+      deleteCookie(PHISH_REPORT_COOKIE);
+      applyPhishReportUI(state, root, msgEl);
+    });
+  }
+
+  // инициализация заданий урока 4
+  document.addEventListener("DOMContentLoaded", () => {
+    initPhishEmailTask();
+    initPhishReportTask();
+  });
 
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
