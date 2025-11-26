@@ -712,18 +712,18 @@ html.dark .phish-email {
 }
 
 .phish-choice__option {
-  border: none;
-  border-radius: 999px;
-  padding: 12px 26px;
-  font-size: 16px;
-  font-weight: 700;
-  background: #fb7185;
-  color: #111827;
-  cursor: pointer;
-  min-width: 180px;
-  text-align: center;
-  box-shadow: 0 8px 16px rgba(248,113,113,.45);
-  transition: .2s transform, .2s box-shadow, .2s filter, .2s background;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.2);
+    color: #111827;
+    cursor: pointer;
+    min-width: 180px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgb(167 167 167 / 45%);
+    transition: .2s transform, .2s box-shadow, .2s filter, .2s background;
 }
 
 .phish-choice__option:hover {
@@ -736,7 +736,8 @@ html.dark .phish-email {
 }
 
 .phish-choice__option.active {
-  filter: brightness(0.95);
+    filter: brightness(0.95);
+    border: 1px solid gray;
 }
 
 .phish-choice__option.correct {
