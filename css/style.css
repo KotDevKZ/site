@@ -546,3 +546,17 @@ html.dark .match-drop {
   background: rgba(255, 255, 255, 0.02);
 }
 
+.free-answer input[type="text"] {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.15);
+  font-size: 16px;
+  background: var(--card-solid);
+  color: var(--ink);
+  outline: none;
+}
+.free-answer input:disabled {
+  opacity: .6;
+}

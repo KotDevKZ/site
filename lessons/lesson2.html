@@ -44,9 +44,78 @@
       </ul>
       <h2>Задания</h2>
       <ol>
-        <li>Задание 1</li>
-        <li>Задание 2</li>
-        <li>Задание 3</li>
+
+        <!-- === Задание 1: введи свой ответ === -->
+        <li>
+          <h3>Задание 1. Что такое двухфакторная аутентификация?</h3>
+          <p>Введи свой вариант ответа:</p>
+
+          <div id="freeAnswerTask" class="free-answer">
+            <input type="text" id="freeAnswerInput" placeholder="Введите ответ..." />
+            <button class="btn" id="freeAnswerSubmitBtn">Ввести</button>
+            <p id="freeAnswerMsg" class="pw-message"></p>
+          </div>
+        </li>
+
+        <!-- === Задание 2: Соотнеси пары === -->
+        <li>
+          <h3>Задание 2. Соотнеси правильные пары</h3>
+
+          <div id="match2FA" class="match-2fa">
+
+            <!-- Левая колонка (ситуации) -->
+            <div class="match-col">
+              <div class="match-row" data-sit="s1">
+                Ты входишь в Instagram с нового телефона
+                <div class="match-drop" data-target="A"></div>
+              </div>
+              <div class="match-row" data-sit="s2">
+                На сайте банка нужно подтвердить перевод
+                <div class="match-drop" data-target="B"></div>
+              </div>
+              <div class="match-row" data-sit="s3">
+                Разблокируешь телефон
+                <div class="match-drop" data-target="C"></div>
+              </div>
+              <div class="match-row" data-sit="s4">
+                Заходишь в электронный дневник
+                <div class="match-drop" data-target="D"></div>
+              </div>
+              <div class="match-row" data-sit="s5">
+                Вход в почту с чужого компьютера
+                <div class="match-drop" data-target="E"></div>
+              </div>
+            </div>
+
+            <!-- Правая колонка (ответы — перетаскиваются) -->
+            <div class="match-pool" id="match2FAPool">
+              <button class="match-item" draggable="true" data-key="A">
+                Приходит SMS-код
+              </button>
+              <button class="match-item" draggable="true" data-key="B">
+                Приложение отправляет одноразовый код
+              </button>
+              <button class="match-item" draggable="true" data-key="C">
+                Отпечаток пальца или лицо
+              </button>
+              <button class="match-item" draggable="true" data-key="D">
+                Нужно ввести пароль и PIN-код
+              </button>
+              <button class="match-item" draggable="true" data-key="E">
+                На телефон приходит уведомление для подтверждения
+              </button>
+            </div>
+
+          </div>
+
+          <div class="pw-actions">
+            <button class="btn" id="match2FACheckBtn">Проверить</button>
+            <button class="btn btn-outline" id="match2FAResetBtn">Сбросить</button>
+            <p id="match2FAMsg" class="pw-message"></p>
+          </div>
+
+        </li>
+
       </ol>
       <h2>Тест</h2>
       <div class='quiz'>

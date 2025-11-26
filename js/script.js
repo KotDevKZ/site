@@ -536,6 +536,160 @@
     });
   }
 
+  // === Задание 1 Урок 2: свободный ответ (1 попытка) ===
+  const FREE2FA_COOKIE = "lesson2_free_answer";
+
+  function saveFreeAnswer(txt) {
+    setCookie(FREE2FA_COOKIE, txt, 365);
+  }
+
+  function loadFreeAnswer() {
+    return getCookie(FREE2FA_COOKIE);
+  }
+
+  function initFreeAnswerTask() {
+    const wrap = document.getElementById("freeAnswerTask");
+    if (!wrap) return;
+
+    const input = document.getElementById("freeAnswerInput");
+    const btn = document.getElementById("freeAnswerSubmitBtn");
+    const msg = document.getElementById("freeAnswerMsg");
+
+    const saved = loadFreeAnswer();
+    if (saved) {
+      input.disabled = true;
+      btn.disabled = true;
+      msg.textContent = "Ответ уже сохранён 👍";
+      msg.classList.add("correct");
+      return;
+    }
+
+    btn.addEventListener("click", () => {
+      const val = input.value.trim();
+      if (!val) {
+        msg.textContent = "Введите ответ!";
+        msg.classList.add("incorrect");
+        return;
+      }
+
+      saveFreeAnswer(val);
+      input.disabled = true;
+      btn.disabled = true;
+      msg.textContent = "Ответ сохранён!";
+      msg.classList.remove("incorrect");
+      msg.classList.add("correct");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initFreeAnswerTask);
+
+  // === Задание 2 Урок 2: соотнеси пары ===
+  const MATCH2FA_COOKIE = "lesson2_match_state";
+
+  const MATCH2FA_CORRECT = {
+    s1: "A",
+    s2: "B",
+    s3: "C",
+    s4: "D",
+    s5: "E"
+  };
+
+  function saveMatch2FAState() {
+    const wrap = document.getElementById("match2FA");
+    if (!wrap) return;
+
+    const state = {};
+    wrap.querySelectorAll(".match-row").forEach(row => {
+      const sit = row.dataset.sit;
+      const drop = row.querySelector(".match-drop");
+      const item = drop.querySelector(".match-item");
+      state[sit] = item ? item.dataset.key : "pool";
+    });
+
+    setCookie(MATCH2FA_COOKIE, JSON.stringify(state), 365);
+  }
+
+  function loadMatch2FAState() {
+    const wrap = document.getElementById("match2FA");
+    if (!wrap) return;
+
+    const pool = document.getElementById("match2FAPool");
+    const raw = getCookie(MATCH2FA_COOKIE);
+    if (!raw) return;
+
+    let state;
+    try { state = JSON.parse(raw); } catch { return; }
+
+    Object.entries(state).forEach(([sit, key]) => {
+      const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+      const drop = wrap.querySelector(`.match-row[data-sit="${sit}"] .match-drop`);
+
+      if (!item || !drop) return;
+      drop.appendChild(item);
+    });
+  }
+
+  function initMatch2FA() {
+    const wrap = document.getElementById("match2FA");
+    if (!wrap) return;
+
+    const pool = document.getElementById("match2FAPool");
+    const check = document.getElementById("match2FACheckBtn");
+    const reset = document.getElementById("match2FAResetBtn");
+    const msg = document.getElementById("match2FAMsg");
+
+    wrap.querySelectorAll(".match-item").forEach(item => {
+      item.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", item.dataset.key);
+      });
+    });
+
+    function zone(z) {
+      z.addEventListener("dragover", e => e.preventDefault());
+      z.addEventListener("drop", e => {
+        const key = e.dataTransfer.getData("text/plain");
+        const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+        if (!item) return;
+
+        const exist = z.querySelector(".match-item");
+        if (exist && exist !== item) pool.appendChild(exist);
+
+        z.appendChild(item);
+        saveMatch2FAState();
+      });
+    }
+
+    zone(pool);
+    wrap.querySelectorAll(".match-drop").forEach(zone);
+
+    loadMatch2FAState();
+
+    check.addEventListener("click", () => {
+      msg.classList.remove("correct", "incorrect");
+
+      let ok = true;
+      wrap.querySelectorAll(".match-row").forEach(row => {
+        const sit = row.dataset.sit;
+        const item = row.querySelector(".match-item");
+        if (!item || MATCH2FA_CORRECT[sit] !== item.dataset.key) ok = false;
+      });
+
+      msg.textContent = ok ? "Правильно!" : "Неверно.";
+      msg.classList.add(ok ? "correct" : "incorrect");
+
+      saveMatch2FAState();
+    });
+
+    reset.addEventListener("click", () => {
+      wrap.querySelectorAll(".match-item").forEach(item => pool.appendChild(item));
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+      deleteCookie(MATCH2FA_COOKIE);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initMatch2FA);
+
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
 
@@ -553,3 +707,4 @@
   window.getResults = getResults;
   window.checkQuizGeneric = checkQuizGeneric;
 })();
+
