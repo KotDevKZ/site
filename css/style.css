@@ -416,7 +416,8 @@ html.dark .pw-item {
 
 /* кнопки и сообщения можно переиспользовать */
 .pw-actions,
-.match-actions {
+.match-actions,
+.malware-actions {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
@@ -425,19 +426,22 @@ html.dark .pw-item {
 }
 
 .pw-message,
-.match-message {
+.match-message,
+.malware-message {
   margin: 0;
   font-weight: 600;
 }
 
 .pw-message.correct,
-.match-message.correct {
-  color: #15803d;
+.match-message.correct,
+.malware-message.correct {
+  color: #15803d; /* зелёный */
 }
 
 .pw-message.incorrect,
-.match-message.incorrect {
-  color: #b91c1c;
+.match-message.incorrect,
+.malware-message.incorrect {
+  color: #b91c1c; /* красный */
 }
 
 /* === Задание 2 "Соотнеси пары" === */
@@ -559,4 +563,84 @@ html.dark .match-drop {
 }
 .free-answer input:disabled {
   opacity: .6;
+}
+/* === Урок 3. Задание 1 — карточки признаков === */
+
+.malware-signs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0 4px;
+}
+
+.malware-signs .sign-chip {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  background: #f97373; /* мягкий красный, как на макете */
+  color: #111827;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,.12);
+  transition: .15s transform, .15s box-shadow, .15s background, .15s color, .15s opacity;
+}
+
+.malware-signs .sign-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.16);
+  opacity: 0.96;
+}
+
+.malware-signs .sign-chip.selected {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0,0,0,.2);
+}
+
+.malware-signs .sign-chip.correct {
+  background: var(--success);
+  color: #f9fafb;
+}
+
+.malware-signs .sign-chip.incorrect {
+  background: var(--danger);
+  color: #f9fafb;
+}
+
+/* === Урок 3. Задание 2 — определения === */
+
+.malware-defs {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.malware-def-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.malware-def-label {
+  font-weight: 700;
+  min-width: 80px;
+}
+
+.malware-def-status {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.malware-def-status.saved {
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* чтобы инпуты выглядели аккуратно в этой задаче */
+.malware-def-row.free-answer input[type="text"] {
+  width: 100%;
+  max-width: 420px;
 }

@@ -690,6 +690,181 @@
 
   document.addEventListener("DOMContentLoaded", initMatch2FA);
 
+  // === Урок 3. Задание 1 "Выбери признаки вредоносного ПО" ===
+
+  const MALWARE_SIGNS_COOKIE = "lesson3_malware_signs";
+
+  const MALWARE_CORRECT_SIGNS = [
+    "install_hidden",
+    "asks_personal",
+    "slow_errors",
+    "changes_settings"
+  ];
+
+  function saveMalwareSignsState(selectedKeys) {
+    setCookie(MALWARE_SIGNS_COOKIE, JSON.stringify({ selected: selectedKeys }), 365);
+  }
+
+  function loadMalwareSignsState() {
+    const raw = getCookie(MALWARE_SIGNS_COOKIE);
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed.selected) ? parsed.selected : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function initMalwareSignsTask() {
+    const wrap = document.getElementById("malwareSigns");
+    if (!wrap) return; // не на этой странице
+
+    const chips = Array.from(wrap.querySelectorAll(".sign-chip"));
+    const checkBtn = document.getElementById("malwareCheckBtn");
+    const resetBtn = document.getElementById("malwareResetBtn");
+    const msg = document.getElementById("malwareMessage");
+    if (!chips.length || !checkBtn || !resetBtn || !msg) return;
+
+    // восстановим выбранные из cookie
+    const savedSelected = new Set(loadMalwareSignsState());
+    chips.forEach(chip => {
+      const key = chip.dataset.key;
+      if (savedSelected.has(key)) {
+        chip.classList.add("selected");
+      }
+
+      chip.addEventListener("click", () => {
+        chip.classList.toggle("selected");
+        // при любом изменении очищаем сообщение и подсветку
+        chips.forEach(c => c.classList.remove("correct", "incorrect"));
+        msg.textContent = "";
+        msg.classList.remove("correct", "incorrect");
+
+        const currentSelected = chips
+          .filter(c => c.classList.contains("selected"))
+          .map(c => c.dataset.key);
+        saveMalwareSignsState(currentSelected);
+      });
+    });
+
+    checkBtn.addEventListener("click", () => {
+      const selected = chips.filter(c => c.classList.contains("selected"));
+      msg.classList.remove("correct", "incorrect");
+
+      if (!selected.length) {
+        msg.textContent = "Сначала выбери хотя бы один вариант.";
+        msg.classList.add("incorrect");
+        return;
+      }
+
+      // сброс старой подсветки
+      chips.forEach(c => c.classList.remove("correct", "incorrect"));
+
+      let allRight = true;
+
+      selected.forEach(chip => {
+        const key = chip.dataset.key;
+        if (MALWARE_CORRECT_SIGNS.includes(key)) {
+          chip.classList.add("correct");
+        } else {
+          chip.classList.add("incorrect");
+          allRight = false;
+        }
+      });
+
+      // проверяем, не забыли ли какие-то верные варианты
+      const selectedKeys = new Set(selected.map(c => c.dataset.key));
+      MALWARE_CORRECT_SIGNS.forEach(k => {
+        if (!selectedKeys.has(k)) allRight = false;
+      });
+
+      if (allRight) {
+        msg.textContent = "Правильно! Ты выбрал(а) все верные признаки.";
+        msg.classList.add("correct");
+      } else {
+        msg.textContent = "Есть ошибки: проверь ещё раз выделенные варианты.";
+        msg.classList.add("incorrect");
+      }
+
+      const currentSelected = chips
+        .filter(c => c.classList.contains("selected"))
+        .map(c => c.dataset.key);
+      saveMalwareSignsState(currentSelected);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      chips.forEach(chip => {
+        chip.classList.remove("selected", "correct", "incorrect");
+      });
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+      deleteCookie(MALWARE_SIGNS_COOKIE);
+    });
+  }
+
+  // === Урок 3. Задание 2 "Напиши определения" ===
+
+  const MALWARE_DEFS_COOKIE = "lesson3_malware_defs";
+
+  function initMalwareDefsTask() {
+    const block = document.getElementById("malwareDefinitions");
+    if (!block) return; // не на этой странице
+
+    let stored = {};
+    const raw = getCookie(MALWARE_DEFS_COOKIE);
+    if (raw) {
+      try { stored = JSON.parse(raw) || {}; } catch { stored = {}; }
+    }
+
+    function saveDefs() {
+      setCookie(MALWARE_DEFS_COOKIE, JSON.stringify(stored), 365);
+    }
+
+    const keys = ["virus", "worm", "trojan"];
+
+    keys.forEach(key => {
+      const input = block.querySelector(`input[data-def="${key}"]`);
+      const btn = block.querySelector(`button[data-def-submit="${key}"]`);
+      const status = block.querySelector(`.malware-def-status[data-def-status="${key}"]`);
+      if (!input || !btn || !status) return;
+
+      function lock(value) {
+        input.value = value;
+        input.disabled = true;
+        btn.disabled = true;
+        status.textContent = "Ответ сохранён";
+        status.classList.add("saved");
+      }
+
+      // если уже есть сохранённый ответ — сразу блокируем поле
+      if (stored[key]) {
+        lock(stored[key]);
+      }
+
+      btn.addEventListener("click", () => {
+        if (input.disabled) return; // уже отправлено
+
+        const value = input.value.trim();
+        if (!value) {
+          alert("Сначала введи определение.");
+          return;
+        }
+
+        stored[key] = value;
+        saveDefs();
+        lock(value);
+      });
+    });
+  }
+
+  // инициализация заданий урока 3
+  document.addEventListener("DOMContentLoaded", () => {
+    initMalwareSignsTask();
+    initMalwareDefsTask();
+  });
+
+
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
 
