@@ -163,7 +163,7 @@
       homeBtn.type = "button";
       homeBtn.className = "btn";
       homeBtn.textContent = "Главная страница";
-      homeBtn.addEventListener("click", () => window.location.assign("/"));
+      homeBtn.addEventListener("click", () => window.location.assign("/site"));
 
       anchor.insertAdjacentElement(res ? "afterend" : "beforeend", homeBtn);
     }
