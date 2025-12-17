@@ -141,6 +141,10 @@
 
   // автоматически добавим кнопку «Сбросить попытку» под результатом (если её нет)
   document.addEventListener("DOMContentLoaded", () => {
+    // запускать только на страницах уроков
+    const path = window.location.pathname;
+    if (!path.startsWith("/site/lessons/")) return;
+
     const res = document.getElementById("result");
     const anchor = res ?? document.body;
 
@@ -152,7 +156,6 @@
       resetBtn.className = "btn btn-outline";
       resetBtn.textContent = "Сбросить попытку";
       resetBtn.addEventListener("click", window.resetQuiz);
-
       anchor.insertAdjacentElement(res ? "afterend" : "beforeend", resetBtn);
     }
 
@@ -164,7 +167,6 @@
       homeBtn.className = "btn";
       homeBtn.textContent = "Главная страница";
       homeBtn.addEventListener("click", () => window.location.assign("/site"));
-
       anchor.insertAdjacentElement(res ? "afterend" : "beforeend", homeBtn);
     }
   });
