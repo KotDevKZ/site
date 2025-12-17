@@ -1,1 +1,473 @@
-<!DOCTYPE html><html lang='ru'><head><meta charset='utf-8'><title>Сертификат</title><link rel='stylesheet' href='css/style.css'><script src='js/script.js' defer></script><script src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'></script><script src='https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js'></script><script src='js/certificate.js' defer></script></head><body><div class='container'><div class='card certificate' id='cert'><h1>СЕРТИФИКАТ</h1><p>Подтверждает, что</p><p id='studentName' style='font-weight:700;font-size:28px;color:#16a085'>Иван Иванов</p><p>успешно прошёл курс</p><h2>«Основы информационной безопасности»</h2><p>Средний результат: <b id='avg'>0%</b></p><p>Дата: <span id='date'></span></p></div><div style='margin-top:12px'><button onclick='(async()=>{const c=await html2canvas(document.getElementById("cert"),{scale:2});const a=document.createElement("a");a.href=c.toDataURL("image/png");a.download="certificate.png";a.click();})()'>Скачать PNG</button> <button onclick='(async()=>{const c=await html2canvas(document.getElementById("cert"),{scale:2});const img=c.toDataURL("image/png");const pdf=new jspdf.jsPDF("landscape","pt","a4");const pw=pdf.internal.pageSize.getWidth();const ph=pdf.internal.pageSize.getHeight();const ratio=Math.min(pw/c.width,ph/c.height);const w=c.width*ratio;const h=c.height*ratio;const x=(pw-w)/2;const y=(ph-h)/2;pdf.addImage(img,"PNG",x,y,w,h);pdf.save("certificate.pdf");})()'>Скачать PDF</button></div></div></body></html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Сертификат</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/script.js" defer></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="js/certificate.js" defer></script>
+
+  <style>
+    :root{
+      --ink:#12202a;
+      --muted:#5a6a75;
+      --gold1:#c9a646;
+      --gold2:#f2d27a;
+      --teal:#0f8e7a;
+      --paper:#fbf6ea;
+      --paper2:#f3ead3;
+      --shadow: 0 18px 45px rgba(0,0,0,.18);
+    }
+
+    body{
+      margin:0;
+      padding:28px 18px;
+      background: radial-gradient(1200px 500px at 50% 0%, #1c2a35 0%, #0f1820 45%, #0b1218 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+      color: var(--ink);
+    }
+
+    .page-wrap{
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Полотно сертификата: фиксированный размер под A4 landscape */
+    .certificate{
+      position: relative;
+      width: 1123px;   /* ~A4 landscape при 96dpi */
+      height: 794px;
+      margin: 0 auto;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background:
+        radial-gradient(900px 380px at 30% 30%, rgba(255,255,255,.45) 0%, rgba(255,255,255,0) 55%),
+        linear-gradient(135deg, var(--paper) 0%, var(--paper2) 100%);
+    }
+
+    /* Лёгкая текстура бумаги */
+    .paper-noise{
+      position:absolute; inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background:
+        repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, rgba(0,0,0,0) 1px 3px),
+        repeating-linear-gradient(90deg, rgba(0,0,0,.018) 0 1px, rgba(0,0,0,0) 1px 4px);
+      mix-blend-mode: multiply;
+    }
+
+    /* Декоративная рамка */
+    .frame{
+      position:absolute; inset:26px;
+      border-radius: 14px;
+      background:
+        linear-gradient(#0000,#0000) padding-box,
+        linear-gradient(135deg, rgba(201,166,70,.95), rgba(242,210,122,.85), rgba(201,166,70,.95)) border-box;
+      border: 3px solid transparent;
+      box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.35),
+        inset 0 0 0 10px rgba(18,32,42,.06);
+    }
+
+    .inner{
+      position:absolute; inset:26px;
+      border-radius: 14px;
+      padding: 44px 64px;
+      box-sizing: border-box;
+    }
+
+    /* Фоновый SVG-орнамент */
+    .ornament{
+      position:absolute; inset:0;
+      pointer-events:none;
+      opacity:.55;
+    }
+
+    /* Водяной знак (крупно, очень светло) */
+    .watermark{
+      position:absolute;
+      left:50%; top:52%;
+      transform: translate(-50%,-50%) rotate(-12deg);
+      font-weight: 900;
+      letter-spacing: .28em;
+      font-size: 84px;
+      color: rgba(18,32,42,.06);
+      text-transform: uppercase;
+      white-space: nowrap;
+      pointer-events:none;
+      user-select:none;
+    }
+
+    .top-row{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 18px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      max-width: 520px;
+    }
+
+    .brand .kicker{
+      font-size: 13px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .brand .title{
+      margin:0;
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 64px;
+      letter-spacing: .06em;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .brand .subtitle{
+      margin:0;
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.45;
+    }
+
+    /* Печать/медаль */
+    .seal{
+      width: 150px;
+      height: 150px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.9) 0%, rgba(255,255,255,0) 45%),
+        conic-gradient(from 20deg, var(--gold1), var(--gold2), var(--gold1), #b88f2e, var(--gold2), var(--gold1));
+      padding: 10px;
+      box-shadow: 0 18px 30px rgba(0,0,0,.18);
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .seal::after{
+      content:"";
+      position:absolute; inset:12px;
+      border-radius:999px;
+      border: 2px dashed rgba(18,32,42,.18);
+    }
+    .seal-inner{
+      width:100%; height:100%;
+      border-radius:999px;
+      background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      color: var(--ink);
+    }
+    .seal-inner .seal-top{
+      font-size: 11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: rgba(18,32,42,.7);
+      margin-bottom: 8px;
+    }
+    .seal-inner .seal-mid{
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing:.08em;
+      line-height: 1.1;
+    }
+    .seal-inner .seal-bot{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(18,32,42,.7);
+    }
+
+    .mid{
+      margin-top: 34px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .mid .line{
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    #studentName{
+      font-weight: 900;
+      font-size: 46px;
+      margin: 4px 0 2px;
+      color: var(--teal);
+      font-family: "Georgia", "Times New Roman", serif;
+      letter-spacing: .02em;
+      text-shadow: 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .course{
+      margin-top: 6px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .course h2{
+      margin: 10px 0 0;
+      font-size: 30px;
+      line-height: 1.25;
+      color: var(--ink);
+      letter-spacing:.01em;
+    }
+
+    .meta{
+      margin-top: 26px;
+      display:flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .meta .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(18,32,42,.06);
+      border: 1px solid rgba(18,32,42,.10);
+      color: rgba(18,32,42,.92);
+      font-weight: 650;
+    }
+
+    .meta .pill b{
+      color: var(--ink);
+    }
+
+    .bottom{
+      position:absolute;
+      left:64px; right:64px; bottom: 56px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 18px;
+    }
+
+    .signs{
+      display:flex;
+      gap: 34px;
+      flex-wrap: wrap;
+    }
+
+    .sig{
+      min-width: 260px;
+    }
+
+    .sig .sig-line{
+      height: 2px;
+      background: rgba(18,32,42,.20);
+      margin-bottom: 8px;
+    }
+
+    .sig .sig-title{
+      font-size: 12px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+      color: rgba(18,32,42,.70);
+      margin-bottom: 3px;
+    }
+
+    .sig .sig-name{
+      font-weight: 800;
+      color: rgba(18,32,42,.92);
+    }
+
+    .cert-id{
+      text-align:right;
+      color: rgba(18,32,42,.65);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .cert-id .id{
+      font-weight: 800;
+      letter-spacing:.12em;
+    }
+
+    /* Кнопки скачивания */
+    .actions{
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      margin: 14px auto 0;
+      max-width: 1123px;
+    }
+    .actions button{
+      cursor:pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+      font-weight: 650;
+      backdrop-filter: blur(10px);
+    }
+    .actions button:hover{
+      background: rgba(255,255,255,.16);
+    }
+
+    /* Адаптация: на узких экранах уменьшаем масштаб просмотра */
+    @media (max-width: 1200px){
+      .certificate{
+        transform: scale(.88);
+        transform-origin: top center;
+      }
+      .actions{ margin-top: 8px; }
+    }
+    @media (max-width: 980px){
+      .certificate{
+        transform: scale(.72);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrap">
+    <div class="certificate" id="cert">
+      <div class="paper-noise"></div>
+
+      <div class="frame"></div>
+
+      <!-- Узоры (inline SVG) -->
+      <svg class="ornament" viewBox="0 0 1123 794" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <pattern id="p1" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M24 0v48M0 24h48" stroke="rgba(18,32,42,.06)" stroke-width="2"/>
+            <path d="M0 0l48 48M48 0L0 48" stroke="rgba(18,32,42,.03)" stroke-width="2"/>
+          </pattern>
+
+          <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="rgba(201,166,70,.55)"/>
+            <stop offset="0.5" stop-color="rgba(242,210,122,.35)"/>
+            <stop offset="1" stop-color="rgba(201,166,70,.55)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- общий паттерн -->
+        <rect x="0" y="0" width="1123" height="794" fill="url(#p1)" opacity=".55"/>
+
+        <!-- декоративные дуги по краям -->
+        <path d="M40,110 C220,20 420,20 560,70 C700,120 880,100 1083,30"
+              fill="none" stroke="url(#gGold)" stroke-width="6" opacity=".55"/>
+        <path d="M40,684 C240,764 420,770 560,720 C720,662 920,690 1083,760"
+              fill="none" stroke="url(#gGold)" stroke-width="6" opacity=".45"/>
+
+        <!-- угловые орнаменты -->
+        <g opacity=".55" stroke="rgba(18,32,42,.14)" stroke-width="2" fill="none">
+          <path d="M90 110c30-30 62-46 110-46" />
+          <path d="M90 110c0-40 0-72 0-110" opacity="0"/>
+          <path d="M90 110c-30 30-46 62-46 110" />
+          <path d="M1033 110c-30-30-62-46-110-46" />
+          <path d="M1033 110c30 30 46 62 46 110" />
+          <path d="M90 684c30 30 62 46 110 46" />
+          <path d="M90 684c-30-30-46-62-46-110" />
+          <path d="M1033 684c-30 30-62 46-110 46" />
+          <path d="M1033 684c30-30 46-62 46-110" />
+        </g>
+      </svg>
+
+      <div class="watermark">INFORMATION SECURITY</div>
+
+      <div class="inner">
+        <div class="top-row">
+          <div class="brand">
+            <div class="kicker">Сертификат о прохождении</div>
+            <h1 class="title">СЕРТИФИКАТ</h1>
+            <p class="subtitle">
+              Настоящим подтверждается, что указанный ниже участник успешно завершил обучение и выполнил итоговые задания курса.
+            </p>
+          </div>
+
+          <div class="seal" aria-hidden="true">
+            <div class="seal-inner">
+              <div class="seal-top">ПОДТВЕРЖДЕНО</div>
+              <div class="seal-mid">ОТЛИЧНО</div>
+              <div class="seal-bot">CERTIFIED</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mid">
+          <div class="line">Подтверждает, что</div>
+          <div id="studentName">Иван Иванов</div>
+
+          <div class="course">
+            успешно прошёл курс
+            <h2>«Основы информационной безопасности»</h2>
+          </div>
+
+          <div class="meta">
+            <div class="pill">Средний результат: <b id="avg">0%</b></div>
+            <div class="pill">Дата выдачи: <b><span id="date"></span></b></div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="signs">
+            <div class="sig">
+              <div class="sig-line"></div>
+              <div class="sig-title">Преподаватель</div>
+              <div class="sig-name">______________</div>
+            </div>
+
+            <div class="sig">
+              <div class="sig-line"></div>
+              <div class="sig-title">Руководитель курса</div>
+              <div class="sig-name">______________</div>
+            </div>
+          </div>
+
+          <div class="cert-id">
+            <div>Серия: <span class="id">ISB</span></div>
+            <div>Номер: <span class="id">#<span id="certNo">0001</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" onclick='(async()=>{
+        const c=await html2canvas(document.getElementById("cert"),{scale:2});
+        const a=document.createElement("a");
+        a.href=c.toDataURL("image/png");
+        a.download="certificate.png";
+        a.click();
+      })()'>Скачать PNG</button>
+
+      <button type="button" onclick='(async()=>{
+        const c=await html2canvas(document.getElementById("cert"),{scale:2});
+        const img=c.toDataURL("image/png");
+        const pdf=new jspdf.jsPDF("landscape","pt","a4");
+        const pw=pdf.internal.pageSize.getWidth();
+        const ph=pdf.internal.pageSize.getHeight();
+        const ratio=Math.min(pw/c.width,ph/c.height);
+        const w=c.width*ratio;
+        const h=c.height*ratio;
+        const x=(pw-w)/2;
+        const y=(ph-h)/2;
+        pdf.addImage(img,"PNG",x,y,w,h);
+        pdf.save("certificate.pdf");
+      })()'>Скачать PDF</button>
+
+      <button type="button" onclick="window.location.assign('/site')">На главную</button>
+    </div>
+  </div>
+</body>
+</html>
