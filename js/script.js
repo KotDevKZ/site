@@ -142,14 +142,30 @@
   // автоматически добавим кнопку «Сбросить попытку» под результатом (если её нет)
   document.addEventListener("DOMContentLoaded", () => {
     const res = document.getElementById("result");
-    if (res && !document.getElementById("resetAttempt")) {
-      const btn = document.createElement("button");
-      btn.id = "resetAttempt";
-      btn.type = "button";
-      btn.className = "btn btn-outline";
-      btn.textContent = "Сбросить попытку";
-      btn.onclick = window.resetQuiz;
-      res.insertAdjacentElement("afterend", btn);
+    const anchor = res ?? document.body;
+
+    // Сбросить попытку
+    if (!document.getElementById("resetAttempt") && typeof window.resetQuiz === "function") {
+      const resetBtn = document.createElement("button");
+      resetBtn.id = "resetAttempt";
+      resetBtn.type = "button";
+      resetBtn.className = "btn btn-outline";
+      resetBtn.textContent = "Сбросить попытку";
+      resetBtn.addEventListener("click", window.resetQuiz);
+
+      anchor.insertAdjacentElement(res ? "afterend" : "beforeend", resetBtn);
+    }
+
+    // Главная страница
+    if (!document.getElementById("goHomeBtn")) {
+      const homeBtn = document.createElement("button");
+      homeBtn.id = "goHomeBtn";
+      homeBtn.type = "button";
+      homeBtn.className = "btn";
+      homeBtn.textContent = "Главная страница";
+      homeBtn.addEventListener("click", () => window.location.assign("/"));
+
+      anchor.insertAdjacentElement(res ? "afterend" : "beforeend", homeBtn);
     }
   });
 
