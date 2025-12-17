@@ -1413,6 +1413,227 @@ function initMatch7Wifi() {
 
 document.addEventListener("DOMContentLoaded", initMatch7Wifi);
 
+// === Урок 8: распределение по столбикам (+ / -) ===
+const L8_COL_COOKIE = "lesson8_columns_state";
+
+const L8_PLUS_KEYS = ["plus_access","plus_team","plus_backup","plus_autosave","plus_memory"];
+const L8_MINUS_KEYS = ["minus_hack","minus_leak","minus_inet"];
+
+function saveL8ColumnsState(){
+  const wrap = document.getElementById("lesson8Columns");
+  if (!wrap) return;
+
+  const state = {};
+  wrap.querySelectorAll(".pw-item").forEach(item => {
+    const key = item.dataset.key;
+    const pid = item.parentElement.id;
+    if (pid === "l8Plus") state[key] = "plus";
+    else if (pid === "l8Minus") state[key] = "minus";
+    else state[key] = "pool";
+  });
+
+  setCookie(L8_COL_COOKIE, JSON.stringify(state), 365);
+}
+
+function loadL8ColumnsState(){
+  const wrap = document.getElementById("lesson8Columns");
+  if (!wrap) return;
+
+  const pool = document.getElementById("l8Pool");
+  const plus = document.getElementById("l8Plus");
+  const minus = document.getElementById("l8Minus");
+  if (!pool || !plus || !minus) return;
+
+  const raw = getCookie(L8_COL_COOKIE);
+  if (!raw) return;
+
+  let state;
+  try { state = JSON.parse(raw); } catch { return; }
+
+  Object.entries(state).forEach(([key, place]) => {
+    const item = wrap.querySelector(`.pw-item[data-key="${key}"]`);
+    if (!item) return;
+    if (place === "plus") plus.appendChild(item);
+    else if (place === "minus") minus.appendChild(item);
+    else pool.appendChild(item);
+  });
+}
+
+function initLesson8Columns(){
+  const wrap = document.getElementById("lesson8Columns");
+  if (!wrap) return;
+
+  const pool = document.getElementById("l8Pool");
+  const plus = document.getElementById("l8Plus");
+  const minus = document.getElementById("l8Minus");
+  const checkBtn = document.getElementById("l8CheckBtn");
+  const resetBtn = document.getElementById("l8ResetBtn");
+  const msg = document.getElementById("l8Msg");
+  if (!pool || !plus || !minus || !checkBtn || !resetBtn || !msg) return;
+
+  wrap.querySelectorAll(".pw-item").forEach(item => {
+    item.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", item.dataset.key);
+    });
+  });
+
+  function makeZone(zone){
+    zone.addEventListener("dragover", e => e.preventDefault());
+    zone.addEventListener("drop", e => {
+      e.preventDefault();
+      const key = e.dataTransfer.getData("text/plain");
+      const item = wrap.querySelector(`.pw-item[data-key="${key}"]`);
+      if (!item) return;
+      zone.appendChild(item);
+      msg.textContent = "";
+      msg.classList.remove("correct","incorrect");
+      saveL8ColumnsState();
+    });
+  }
+
+  makeZone(pool);
+  makeZone(plus);
+  makeZone(minus);
+
+  loadL8ColumnsState();
+
+  checkBtn.addEventListener("click", () => {
+    msg.classList.remove("correct","incorrect");
+
+    // требуем, чтобы пул был пустым
+    const poolItems = pool.querySelectorAll(".pw-item").length;
+    if (poolItems > 0){
+      msg.textContent = "Распредели все карточки по столбикам.";
+      msg.classList.add("incorrect");
+      return;
+    }
+
+    let ok = true;
+
+    plus.querySelectorAll(".pw-item").forEach(i => {
+      if (!L8_PLUS_KEYS.includes(i.dataset.key)) ok = false;
+    });
+    minus.querySelectorAll(".pw-item").forEach(i => {
+      if (!L8_MINUS_KEYS.includes(i.dataset.key)) ok = false;
+    });
+
+    msg.textContent = ok ? "Правильно!" : "Неверно.";
+    msg.classList.add(ok ? "correct" : "incorrect");
+    saveL8ColumnsState();
+  });
+
+  resetBtn.addEventListener("click", () => {
+    wrap.querySelectorAll(".pw-item").forEach(i => pool.appendChild(i));
+    msg.textContent = "";
+    msg.classList.remove("correct","incorrect");
+    deleteCookie(L8_COL_COOKIE);
+  });
+}
+document.addEventListener("DOMContentLoaded", initLesson8Columns);
+
+
+// === Урок 8: соотнеси пары (облако) ===
+const L8_MATCH_COOKIE = "lesson8_match_state";
+const L8_MATCH_CORRECT = { t1:"A", t2:"B", t3:"C", t4:"D", t5:"E" };
+
+function saveL8MatchState(){
+  const wrap = document.getElementById("lesson8Match");
+  if (!wrap) return;
+
+  const state = {};
+  wrap.querySelectorAll(".match-row").forEach(row => {
+    const sit = row.dataset.sit;
+    const item = row.querySelector(".match-drop .match-item");
+    state[sit] = item ? item.dataset.key : "pool";
+  });
+  setCookie(L8_MATCH_COOKIE, JSON.stringify(state), 365);
+}
+
+function loadL8MatchState(){
+  const wrap = document.getElementById("lesson8Match");
+  if (!wrap) return;
+
+  const pool = document.getElementById("lesson8MatchPool");
+  const raw = getCookie(L8_MATCH_COOKIE);
+  if (!raw || !pool) return;
+
+  let state;
+  try { state = JSON.parse(raw); } catch { return; }
+
+  // вернуть всё в пул
+  wrap.querySelectorAll(".match-item").forEach(i => pool.appendChild(i));
+
+  Object.entries(state).forEach(([sit, key]) => {
+    const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+    const drop = wrap.querySelector(`.match-row[data-sit="${sit}"] .match-drop`);
+    if (!item || !drop) return;
+    drop.appendChild(item);
+  });
+}
+
+function initLesson8Match(){
+  const wrap = document.getElementById("lesson8Match");
+  if (!wrap) return;
+
+  const pool  = document.getElementById("lesson8MatchPool");
+  const check = document.getElementById("lesson8MatchCheckBtn");
+  const reset = document.getElementById("lesson8MatchResetBtn");
+  const msg   = document.getElementById("lesson8MatchMsg");
+  if (!pool || !check || !reset || !msg) return;
+
+  wrap.querySelectorAll(".match-item").forEach(item => {
+    item.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", item.dataset.key);
+    });
+  });
+
+  function makeZone(z){
+    z.addEventListener("dragover", e => e.preventDefault());
+    z.addEventListener("drop", e => {
+      e.preventDefault();
+      const key = e.dataTransfer.getData("text/plain");
+      const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+      if (!item) return;
+
+      const existing = z.querySelector(".match-item");
+      if (existing && existing !== item) pool.appendChild(existing);
+
+      z.appendChild(item);
+      msg.textContent = "";
+      msg.classList.remove("correct","incorrect");
+      saveL8MatchState();
+    });
+  }
+
+  makeZone(pool);
+  wrap.querySelectorAll(".match-drop").forEach(makeZone);
+
+  loadL8MatchState();
+
+  check.addEventListener("click", () => {
+    msg.classList.remove("correct","incorrect");
+
+    let ok = true;
+    wrap.querySelectorAll(".match-row").forEach(row => {
+      const sit = row.dataset.sit;
+      const item = row.querySelector(".match-drop .match-item");
+      if (!item || item.dataset.key !== L8_MATCH_CORRECT[sit]) ok = false;
+    });
+
+    msg.textContent = ok ? "Правильно!" : "Неверно.";
+    msg.classList.add(ok ? "correct" : "incorrect");
+    saveL8MatchState();
+  });
+
+  reset.addEventListener("click", () => {
+    wrap.querySelectorAll(".match-item").forEach(i => pool.appendChild(i));
+    msg.textContent = "";
+    msg.classList.remove("correct","incorrect");
+    deleteCookie(L8_MATCH_COOKIE);
+  });
+}
+document.addEventListener("DOMContentLoaded", initLesson8Match);
+
 
 
   // инициализация задания 2

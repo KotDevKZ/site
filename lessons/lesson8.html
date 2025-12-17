@@ -42,12 +42,90 @@
         <li>2 разных носителя (например, компьютер + облако).</li>
         <li>1 копия вне дома (чтобы пожар/кража не уничтожили всё).</li>
       </ul>
-      <h2>Задания</h2>
-      <ol>
-        <li>Задание 1</li>
-        <li>Задание 2</li>
-        <li>Задание 3</li>
-      </ol>
+      <h2>Задание 1</h2>
+      <p>Перетащи карточки в правильный столбик: <b>плюсы</b> и <b>минусы</b>.</p>
+
+      <div id="lesson8Columns" class="pw-sort">
+        <div class="pw-pool">
+          <h4>Карточки</h4>
+          <div id="l8Pool" class="pw-list">
+            <div class="pw-item" draggable="true" data-key="plus_access">Доступ из любого места</div>
+            <div class="pw-item" draggable="true" data-key="minus_hack">Риск взлома</div>
+            <div class="pw-item" draggable="true" data-key="minus_leak">Возможность утечки данных</div>
+            <div class="pw-item" draggable="true" data-key="plus_team">Совместная работа</div>
+            <div class="pw-item" draggable="true" data-key="plus_backup">Резервное копирование</div>
+            <div class="pw-item" draggable="true" data-key="plus_autosave">Автоматическое сохранение</div>
+            <div class="pw-item" draggable="true" data-key="plus_memory">Экономия памяти</div>
+            <div class="pw-item" draggable="true" data-key="minus_inet">Зависимость от интернета</div>
+          </div>
+        </div>
+
+        <div class="pw-columns">
+          <div class="pw-column">
+            <h4>Плюсы (+)</h4>
+            <div id="l8Plus" class="pw-drop"></div>
+          </div>
+
+          <div class="pw-column">
+            <h4>Минусы (−)</h4>
+            <div id="l8Minus" class="pw-drop"></div>
+          </div>
+
+          <div class="pw-actions">
+            <button type="button" class="btn" id="l8CheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="l8ResetBtn">Сбросить</button>
+            <p id="l8Msg" class="pw-message"></p>
+          </div>
+        </div>
+      </div>
+
+      <h2>Задание 2</h2>
+      <p>Соотнеси верные пары.</p>
+
+      <div id="lesson8Match" class="match-task">
+        <div class="match-left">
+          <h4>Перетащи буквы к подходящему определению:</h4>
+          <div id="lesson8MatchPool" class="match-pool">
+            <div class="match-item" draggable="true" data-key="A">A. Облачное хранилище</div>
+            <div class="match-item" draggable="true" data-key="B">B. Google Диск</div>
+            <div class="match-item" draggable="true" data-key="C">C. Резервное копирование</div>
+            <div class="match-item" draggable="true" data-key="D">D. Пароль</div>
+            <div class="match-item" draggable="true" data-key="E">E. Интернет</div>
+          </div>
+        </div>
+
+        <div class="match-right">
+          <div class="match-table">
+            <div class="match-row" data-sit="t1">
+              <div class="match-cell match-label">1. Интернет-сервис для хранения данных на удалённых серверах</div>
+              <div class="match-cell match-drop" data-target="t1"></div>
+            </div>
+            <div class="match-row" data-sit="t2">
+              <div class="match-cell match-label">2. Один из популярных сервисов облачного хранения</div>
+              <div class="match-cell match-drop" data-target="t2"></div>
+            </div>
+            <div class="match-row" data-sit="t3">
+              <div class="match-cell match-label">3. Сохранение копий файлов на случай их потери</div>
+              <div class="match-cell match-drop" data-target="t3"></div>
+            </div>
+            <div class="match-row" data-sit="t4">
+              <div class="match-cell match-label">4. Средство защиты доступа к данным</div>
+              <div class="match-cell match-drop" data-target="t4"></div>
+            </div>
+            <div class="match-row" data-sit="t5">
+              <div class="match-cell match-label">5. Необходим для доступа к облаку</div>
+              <div class="match-cell match-drop" data-target="t5"></div>
+            </div>
+          </div>
+
+          <div class="match-actions">
+            <button type="button" class="btn" id="lesson8MatchCheckBtn">Проверить</button>
+            <button type="button" class="btn btn-outline" id="lesson8MatchResetBtn">Сбросить</button>
+            <p id="lesson8MatchMsg" class="match-message"></p>
+          </div>
+        </div>
+      </div>
+
       <h2>Тест</h2>
       <div class='quiz'>
         <form id='quizForm'>
