@@ -1830,6 +1830,50 @@ function initLesson9Match() {
 
 document.addEventListener("DOMContentLoaded", initLesson9Match);
 
+  // === Урок 10: свободный ответ (1 попытка) ===
+  const L10_PLAN_COOKIE = "lesson10_security_plan";
+
+  function initLesson10FreeAnswer() {
+    const wrap = document.getElementById("lesson10Task");
+    if (!wrap) return; // не на этой странице
+
+    const textarea = document.getElementById("lesson10Answer");
+    const btn      = document.getElementById("lesson10SubmitBtn");
+    const status   = document.getElementById("lesson10Status");
+    if (!textarea || !btn || !status) return;
+
+    const saved = getCookie(L10_PLAN_COOKIE);
+    if (saved) {
+      textarea.value = saved;
+      textarea.disabled = true;
+      btn.disabled = true;
+      status.textContent = "Ответ сохранён.";
+      status.classList.add("correct");
+      return;
+    }
+
+    btn.addEventListener("click", () => {
+      const value = textarea.value.trim();
+
+      if (!value) {
+        status.textContent = "Напиши хотя бы одно предложение.";
+        status.classList.remove("correct");
+        status.classList.add("incorrect");
+        return;
+      }
+
+      setCookie(L10_PLAN_COOKIE, value, 365);
+
+      textarea.disabled = true;
+      btn.disabled = true;
+      status.textContent = "Ответ сохранён.";
+      status.classList.remove("incorrect");
+      status.classList.add("correct");
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", initLesson10FreeAnswer);
+
 
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
