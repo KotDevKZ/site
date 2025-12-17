@@ -1139,6 +1139,94 @@
 
   document.addEventListener("DOMContentLoaded", initLesson5FreeAnswer);
 
+  // === Урок 6: "Какие истории лишние (опасные)?" ===
+
+const L6_STORIES_COOKIE = "lesson6_stories_state";
+const L6_DANGER_ID = "2"; // опасная история: 2.png
+
+function loadLesson6State() {
+  const raw = getCookie(L6_STORIES_COOKIE);
+  if (!raw) return { selected: null, checked: false, correct: false };
+  try {
+    const s = JSON.parse(raw);
+    return {
+      selected: s?.selected ?? null,
+      checked: !!s?.checked,
+      correct: !!s?.correct
+    };
+  } catch {
+    return { selected: null, checked: false, correct: false };
+  }
+}
+
+function saveLesson6State(state) {
+  setCookie(L6_STORIES_COOKIE, JSON.stringify(state), 365);
+}
+
+function applyLesson6UI(state, root, msgEl) {
+  if (!root) return;
+  const cards = root.querySelectorAll(".story-card");
+
+  cards.forEach(c => {
+    c.classList.remove("active", "correct", "incorrect");
+    if (state.selected && c.dataset.id === state.selected) {
+      c.classList.add("active");
+    }
+  });
+
+  if (!msgEl) return;
+  msgEl.textContent = "";
+  msgEl.classList.remove("correct", "incorrect");
+
+  if (!state.checked || !state.selected) return;
+
+  const selectedEl = root.querySelector(`.story-card[data-id="${state.selected}"]`);
+  if (selectedEl) selectedEl.classList.add(state.correct ? "correct" : "incorrect");
+
+  if (state.correct) {
+    msgEl.textContent = "Да, верно: потому что указаны данные о местоположении и точном времени.";
+    msgEl.classList.add("correct");
+  } else {
+    msgEl.textContent = "Нет, неверно. Подумай ещё: какая история выдаёт лишние данные?";
+    msgEl.classList.add("incorrect");
+  }
+}
+
+function initLesson6StoriesTask() {
+  const root = document.getElementById("lesson6Stories");
+  if (!root) return;
+
+  const msgEl = document.getElementById("lesson6Msg");
+  const resetBtn = document.getElementById("lesson6ResetBtn");
+  const cards = root.querySelectorAll(".story-card");
+  if (!cards.length || !msgEl || !resetBtn) return;
+
+  let state = loadLesson6State();
+  applyLesson6UI(state, root, msgEl);
+
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      state.selected = card.dataset.id;
+
+      // сохраняем выбор даже если ещё не "проверено"
+      state.checked = true;
+      state.correct = (state.selected === L6_DANGER_ID);
+
+      saveLesson6State(state);
+      applyLesson6UI(state, root, msgEl);
+    });
+  });
+
+  resetBtn.addEventListener("click", () => {
+    state = { selected: null, checked: false, correct: false };
+    deleteCookie(L6_STORIES_COOKIE);
+    applyLesson6UI(state, root, msgEl);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initLesson6StoriesTask);
+
+
 
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);
