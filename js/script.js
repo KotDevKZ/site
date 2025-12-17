@@ -1227,6 +1227,193 @@ function initLesson6StoriesTask() {
 document.addEventListener("DOMContentLoaded", initLesson6StoriesTask);
 
 
+// === Урок 7: свободный ответ про опасности бесплатного Wi-Fi ===
+
+const L7_WIFI_COOKIE = "lesson7_wifi_answer";
+
+function initLesson7FreeAnswer() {
+  const wrap = document.getElementById("lesson7Task");
+  if (!wrap) return; // не эта страница
+
+  const textarea = document.getElementById("lesson7Answer");
+  const btn = document.getElementById("lesson7SubmitBtn");
+  const status = document.getElementById("lesson7Status");
+
+  if (!textarea || !btn || !status) return;
+
+  const saved = getCookie(L7_WIFI_COOKIE);
+
+  // если ответ уже был — блокируем повторный ввод
+  if (saved) {
+    textarea.value = saved;
+    textarea.disabled = true;
+    btn.disabled = true;
+    status.textContent = "Ответ сохранён.";
+    status.classList.add("correct");
+    return;
+  }
+
+  btn.addEventListener("click", () => {
+    const value = textarea.value.trim();
+
+    if (!value) {
+      status.textContent = "Напиши хотя бы одно предложение.";
+      status.classList.remove("correct");
+      status.classList.add("incorrect");
+      return;
+    }
+
+    setCookie(L7_WIFI_COOKIE, value, 365);
+
+    textarea.disabled = true;
+    btn.disabled = true;
+    status.textContent = "Ответ сохранён.";
+    status.classList.remove("incorrect");
+    status.classList.add("correct");
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initLesson7FreeAnswer);
+
+// === Урок 7. Задание 2: соотнеси пары (интернет ↔ описание) ===
+
+const MATCH7_WIFI_COOKIE = "lesson7_match_wifi_state";
+
+// правильные соответствия: строка (s1..s5) -> буква (A..E)
+const MATCH7_WIFI_CORRECT = {
+  s1: "A", // Оптоволокно -> высокая скорость, но не везде
+  s2: "B", // Спутник -> работает даже в горах/степи
+  s3: "C", // Wi-Fi -> удобно, но может быть небезопасно
+  s4: "D", // Проводное -> стабильное, но ограничено кабелем
+  s5: "E"  // Мобильный -> сотовая связь, удобно для телефона
+};
+
+function saveMatch7WifiState() {
+  const wrap = document.getElementById("matchWifi7");
+  if (!wrap) return;
+
+  const state = {};
+  wrap.querySelectorAll(".match-row").forEach(row => {
+    const sit = row.dataset.sit;
+    const drop = row.querySelector(".match-drop");
+    const item = drop.querySelector(".match-item");
+    state[sit] = item ? item.dataset.key : "pool";
+  });
+
+  setCookie(MATCH7_WIFI_COOKIE, JSON.stringify(state), 365);
+}
+
+function loadMatch7WifiState() {
+  const wrap = document.getElementById("matchWifi7");
+  if (!wrap) return;
+
+  const pool = document.getElementById("matchWifi7Pool");
+  const raw = getCookie(MATCH7_WIFI_COOKIE);
+  if (!raw || !pool) return;
+
+  let state;
+  try { state = JSON.parse(raw); } catch { return; }
+
+  // сначала всё в пул (на случай неполного состояния)
+  wrap.querySelectorAll(".match-item").forEach(item => pool.appendChild(item));
+
+  Object.entries(state).forEach(([sit, key]) => {
+    const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+    const drop = wrap.querySelector(`.match-row[data-sit="${sit}"] .match-drop`);
+    if (!item || !drop || key === "pool") return;
+    drop.appendChild(item);
+  });
+}
+
+function initMatch7Wifi() {
+  const wrap = document.getElementById("matchWifi7");
+  if (!wrap) return;
+
+  const pool = document.getElementById("matchWifi7Pool");
+  const check = document.getElementById("matchWifi7CheckBtn");
+  const reset = document.getElementById("matchWifi7ResetBtn");
+  const msg = document.getElementById("matchWifi7Msg");
+
+  if (!pool || !check || !reset || !msg) return;
+
+  // dragstart
+  wrap.querySelectorAll(".match-item").forEach(item => {
+    item.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", item.dataset.key);
+    });
+  });
+
+  function zone(z) {
+    z.addEventListener("dragover", e => e.preventDefault());
+    z.addEventListener("drop", e => {
+      e.preventDefault();
+
+      const key = e.dataTransfer.getData("text/plain");
+      const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+      if (!item) return;
+
+      // если это ячейка (не пул) и в ней уже есть элемент — возвращаем его в пул
+      if (z !== pool) {
+        const exist = z.querySelector(".match-item");
+        if (exist && exist !== item) pool.appendChild(exist);
+      }
+
+      z.appendChild(item);
+
+      // при любом действии — убрать сообщение
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+
+      saveMatch7WifiState();
+    });
+  }
+
+  zone(pool);
+  wrap.querySelectorAll(".match-drop").forEach(zone);
+
+  // восстановим состояние из cookie
+  loadMatch7WifiState();
+
+  check.addEventListener("click", () => {
+    msg.classList.remove("correct", "incorrect");
+
+    // проверим, что все заполнены
+    let allFilled = true;
+    wrap.querySelectorAll(".match-row").forEach(row => {
+      const item = row.querySelector(".match-drop .match-item");
+      if (!item) allFilled = false;
+    });
+
+    if (!allFilled) {
+      msg.textContent = "Заполни все пары.";
+      msg.classList.add("incorrect");
+      return;
+    }
+
+    let ok = true;
+    wrap.querySelectorAll(".match-row").forEach(row => {
+      const sit = row.dataset.sit;
+      const item = row.querySelector(".match-drop .match-item");
+      if (!item || MATCH7_WIFI_CORRECT[sit] !== item.dataset.key) ok = false;
+    });
+
+    msg.textContent = ok ? "Правильно!" : "Неверно. Попробуй ещё раз.";
+    msg.classList.add(ok ? "correct" : "incorrect");
+
+    saveMatch7WifiState();
+  });
+
+  reset.addEventListener("click", () => {
+    wrap.querySelectorAll(".match-item").forEach(item => pool.appendChild(item));
+    msg.textContent = "";
+    msg.classList.remove("correct", "incorrect");
+    deleteCookie(MATCH7_WIFI_COOKIE);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initMatch7Wifi);
+
+
 
   // инициализация задания 2
   document.addEventListener("DOMContentLoaded", initMatchTask);

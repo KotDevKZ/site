@@ -45,12 +45,78 @@
         <li>Не принимайте файлы от незнакомцев.</li>
         <li>Обновляйте систему телефона — новые версии закрывают уязвимости.</li>
       </ul>
-      <h2>Задания</h2>
-      <ol>
-        <li>Задание 1</li>
-        <li>Задание 2</li>
-        <li>Задание 3</li>
-      </ol>
+      <h2>Задание</h2>
+
+      <p>
+        Определи опасности использования бесплатного Wi-Fi и напиши,
+        почему это может быть опасно.
+      </p>
+
+      <div id="lesson7Task" class="free-answer">
+        <textarea
+          id="lesson7Answer"
+          placeholder="Напиши свой ответ здесь..."
+        ></textarea>
+
+        <div class="pw-actions">
+          <button class="btn" id="lesson7SubmitBtn">Ввести</button>
+          <span id="lesson7Status" class="pw-message"></span>
+        </div>
+      </div>
+
+      <h2>Задание 2. Соотнеси верные пары</h2>
+
+      <div id="matchWifi7" class="match-task">
+        <!-- слева: пул вариантов -->
+        <div class="match-left">
+          <h4>Перетащи описание к правильному виду интернета</h4>
+
+          <div id="matchWifi7Pool" class="match-pool">
+            <div class="match-item" draggable="true" data-key="A">A) Высокая скорость, но доступен не везде</div>
+            <div class="match-item" draggable="true" data-key="B">B) Работает даже в горах или в степи</div>
+            <div class="match-item" draggable="true" data-key="C">C) Удобно, но может быть небезопасно</div>
+            <div class="match-item" draggable="true" data-key="D">D) Самое стабильное, но ограничено кабелем</div>
+            <div class="match-item" draggable="true" data-key="E">E) Использует сотовую связь, удобно для телефона</div>
+          </div>
+        </div>
+
+        <!-- справа: таблица соответствий -->
+        <div class="match-right">
+          <div class="match-table">
+            <div class="match-row" data-sit="s1">
+              <div class="match-cell match-label">1. Оптоволоконный интернет</div>
+              <div class="match-cell match-drop" data-target="s1"></div>
+            </div>
+
+            <div class="match-row" data-sit="s2">
+              <div class="match-cell match-label">2. Спутниковый интернет</div>
+              <div class="match-cell match-drop" data-target="s2"></div>
+            </div>
+
+            <div class="match-row" data-sit="s3">
+              <div class="match-cell match-label">3. Wi-Fi</div>
+              <div class="match-cell match-drop" data-target="s3"></div>
+            </div>
+
+            <div class="match-row" data-sit="s4">
+              <div class="match-cell match-label">4. Проводное подключение</div>
+              <div class="match-cell match-drop" data-target="s4"></div>
+            </div>
+
+            <div class="match-row" data-sit="s5">
+              <div class="match-cell match-label">5. Мобильный интернет</div>
+              <div class="match-cell match-drop" data-target="s5"></div>
+            </div>
+          </div>
+
+          <div class="match-actions">
+            <button id="matchWifi7CheckBtn" class="btn" type="button">Проверить</button>
+            <button id="matchWifi7ResetBtn" class="btn btn-outline" type="button">Сбросить</button>
+            <p id="matchWifi7Msg" class="match-message"></p>
+          </div>
+        </div>
+      </div>
+
       <h2>Тест</h2>
       <div class='quiz'>
         <form id='quizForm'>
