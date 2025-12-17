@@ -45,7 +45,19 @@
       <h2>Задание 1</h2>
       <p>Перетащи карточки в правильный столбик: <b>плюсы</b> и <b>минусы</b>.</p>
 
-      <div id="lesson8Columns" class="pw-sort">
+      <div id="lesson8Columns" class="pw-sort" style="display: flex; flex-direction: column;">
+        <div class="pw-columns">
+          <div class="pw-column">
+            <h4>Плюсы (+)</h4>
+            <div id="l8Plus" class="pw-drop"></div>
+          </div>
+
+          <div class="pw-column">
+            <h4>Минусы (−)</h4>
+            <div id="l8Minus" class="pw-drop"></div>
+          </div>
+        </div>
+
         <div class="pw-pool">
           <h4>Карточки</h4>
           <div id="l8Pool" class="pw-list">
@@ -60,22 +72,10 @@
           </div>
         </div>
 
-        <div class="pw-columns">
-          <div class="pw-column">
-            <h4>Плюсы (+)</h4>
-            <div id="l8Plus" class="pw-drop"></div>
-          </div>
-
-          <div class="pw-column">
-            <h4>Минусы (−)</h4>
-            <div id="l8Minus" class="pw-drop"></div>
-          </div>
-
-          <div class="pw-actions">
-            <button type="button" class="btn" id="l8CheckBtn">Проверить</button>
-            <button type="button" class="btn btn-outline" id="l8ResetBtn">Сбросить</button>
-            <p id="l8Msg" class="pw-message"></p>
-          </div>
+        <div class="pw-actions">
+          <button type="button" class="btn" id="l8CheckBtn">Проверить</button>
+          <button type="button" class="btn btn-outline" id="l8ResetBtn">Сбросить</button>
+          <p id="l8Msg" class="pw-message"></p>
         </div>
       </div>
 
