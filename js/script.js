@@ -1634,6 +1634,201 @@ function initLesson8Match(){
 }
 document.addEventListener("DOMContentLoaded", initLesson8Match);
 
+// === Урок 9: Задание 1 — несколько ответов (каждый 1 попытка) ===
+const L9_ETHICS_COOKIE = "lesson9_ethics_answers";
+
+function loadL9Ethics() {
+  const raw = getCookie(L9_ETHICS_COOKIE);
+  if (!raw) return {};
+  try { return JSON.parse(raw) || {}; } catch { return {}; }
+}
+
+function saveL9Ethics(obj) {
+  setCookie(L9_ETHICS_COOKIE, JSON.stringify(obj), 365);
+}
+
+function initLesson9EthicsTask() {
+  const wrap = document.getElementById("lesson9Ethics");
+  if (!wrap) return;
+
+  const status = document.getElementById("l9EthicsStatus");
+  const saved = loadL9Ethics();
+
+  wrap.querySelectorAll("[data-q]").forEach(row => {
+    const q = row.dataset.q;
+    const input = row.querySelector("input");
+    const btn = row.querySelector(`button[data-submit="${q}"]`);
+    if (!input || !btn) return;
+
+    // восстановление
+    if (saved[q]) {
+      input.value = saved[q];
+      input.disabled = true;
+      btn.disabled = true;
+    }
+
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      const val = input.value.trim();
+      if (!val) {
+        if (status) {
+          status.textContent = "Заполни поле перед отправкой.";
+          status.classList.remove("correct");
+          status.classList.add("incorrect");
+        }
+        return;
+      }
+
+      saved[q] = val;
+      saveL9Ethics(saved);
+
+      input.disabled = true;
+      btn.disabled = true;
+
+      if (status) {
+        status.textContent = "Ответ сохранён. Изменить нельзя.";
+        status.classList.remove("incorrect");
+        status.classList.add("correct");
+      }
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initLesson9EthicsTask);
+
+
+// === Урок 9: Задание 2 — соотнеси пары ===
+const L9_MATCH_COOKIE = "lesson9_match_state";
+
+// правильные соответствия: вариант (A..E) -> цель (1..5)
+const L9_MATCH_CORRECT = {
+  "A": "1",
+  "B": "2",
+  "C": "3",
+  "D": "4",
+  "E": "5"
+};
+
+function saveL9MatchState() {
+  const wrap = document.getElementById("lesson9Match");
+  if (!wrap) return;
+
+  const state = {};
+  wrap.querySelectorAll(".match-item").forEach(item => {
+    const key = item.dataset.key;
+    const parent = item.parentElement;
+
+    if (parent.id === "l9MatchPool") state[key] = "pool";
+    else if (parent.classList.contains("match-drop")) state[key] = parent.dataset.target || "pool";
+    else state[key] = "pool";
+  });
+
+  setCookie(L9_MATCH_COOKIE, JSON.stringify(state), 365);
+}
+
+function loadL9MatchState() {
+  const wrap = document.getElementById("lesson9Match");
+  if (!wrap) return;
+
+  const pool = document.getElementById("l9MatchPool");
+  const raw = getCookie(L9_MATCH_COOKIE);
+  if (!raw || !pool) return;
+
+  let state;
+  try { state = JSON.parse(raw); } catch { return; }
+
+  Object.entries(state).forEach(([key, place]) => {
+    const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+    if (!item) return;
+
+    if (place === "pool") {
+      pool.appendChild(item);
+    } else {
+      const drop = wrap.querySelector(`.match-drop[data-target="${place}"]`);
+      (drop || pool).appendChild(item);
+    }
+  });
+}
+
+function initLesson9Match() {
+  const wrap = document.getElementById("lesson9Match");
+  if (!wrap) return;
+
+  const pool = document.getElementById("l9MatchPool");
+  const check = document.getElementById("l9MatchCheckBtn");
+  const reset = document.getElementById("l9MatchResetBtn");
+  const msg = document.getElementById("l9MatchMsg");
+  if (!pool || !check || !reset || !msg) return;
+
+  // dragstart
+  wrap.querySelectorAll(".match-item").forEach(item => {
+    item.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", item.dataset.key);
+    });
+  });
+
+  function makeZone(zone) {
+    zone.addEventListener("dragover", e => e.preventDefault());
+    zone.addEventListener("drop", e => {
+      e.preventDefault();
+      const key = e.dataTransfer.getData("text/plain");
+      const item = wrap.querySelector(`.match-item[data-key="${key}"]`);
+      if (!item) return;
+
+      // если дроп-ячейка занята — вернуть в пул
+      if (zone !== pool) {
+        const existing = zone.querySelector(".match-item");
+        if (existing && existing !== item) pool.appendChild(existing);
+      }
+
+      zone.appendChild(item);
+      msg.textContent = "";
+      msg.classList.remove("correct", "incorrect");
+      saveL9MatchState();
+    });
+  }
+
+  makeZone(pool);
+  wrap.querySelectorAll(".match-drop").forEach(makeZone);
+
+  loadL9MatchState();
+
+  check.addEventListener("click", () => {
+    msg.classList.remove("correct", "incorrect");
+
+    // все ячейки должны быть заполнены
+    const drops = Array.from(wrap.querySelectorAll(".match-drop"));
+    const allFilled = drops.every(d => d.querySelector(".match-item"));
+    if (!allFilled) {
+      msg.textContent = "Заполни все пары.";
+      msg.classList.add("incorrect");
+      return;
+    }
+
+    let ok = true;
+
+    // проверяем: в каждой ячейке должен лежать правильный ключ
+    drops.forEach(drop => {
+      const target = drop.dataset.target;          // "1".."5"
+      const item = drop.querySelector(".match-item");
+      const key = item?.dataset.key;              // "A".."E"
+      if (!key || L9_MATCH_CORRECT[key] !== target) ok = false;
+    });
+
+    msg.textContent = ok ? "Правильно!" : "Неверно.";
+    msg.classList.add(ok ? "correct" : "incorrect");
+    saveL9MatchState();
+  });
+
+  reset.addEventListener("click", () => {
+    wrap.querySelectorAll(".match-item").forEach(i => pool.appendChild(i));
+    msg.textContent = "";
+    msg.classList.remove("correct", "incorrect");
+    deleteCookie(L9_MATCH_COOKIE);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initLesson9Match);
 
 
   // инициализация задания 2
